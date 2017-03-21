@@ -1,0 +1,2 @@
+<h1>Добро пожаловать!</h1>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam aspernatur atque fugiat perferendis sequi! Aspernatur atque error itaque laborum perspiciatis praesentium! Dolor ducimus explicabo tempora.</p>
