@@ -70,19 +70,16 @@ class controllerUser extends Controller
 
     function login_in()
     {
-        if(!isset($_SESSION['user_id']))
+        if(!isset($_REQUEST['login']) || empty($_REQUEST['login'])) echo json_encode(new errorMessage(errorList::EmptyLogin)), exit;
+        if(!isset($_REQUEST['pass']) || empty($_REQUEST['pass'])) echo json_encode(new errorMessage(errorList::EmptyPass)), exit;
+        $this->model->login = $_REQUEST['login'];
+        $this->model->pass = $_REQUEST['pass'];
+        $auth = $this->model->auth();
+        if(property_exists($auth, 'success'))
         {
-            if(!isset($_REQUEST['login']) || empty($_REQUEST['login'])) echo json_encode(new errorMessage(errorList::EmptyLogin)), exit;
-            if(!isset($_REQUEST['pass']) || empty($_REQUEST['pass'])) echo json_encode(new errorMessage(errorList::EmptyPass)), exit;
-            $this->model->login = $_REQUEST['login'];
-            $this->model->pass = $_REQUEST['pass'];
-            $auth = $this->model->auth();
-            if(property_exists($auth, 'success'))
-            {
-                $_SESSION['user_id'] = $this->model->id;
-                header("Location: http://" . $_SERVER['HTTP_HOST']);
-            } else if(property_exists($auth, 'error')) echo json_encode($auth), exit;
-        }
+            $_SESSION['user_id'] = $this->model->id;
+            header("Location: http://" . $_SERVER['HTTP_HOST']);
+        } else if(property_exists($auth, 'error')) echo json_encode($auth), exit;
     }
 
     function login_out()

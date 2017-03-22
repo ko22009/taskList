@@ -395,9 +395,9 @@ class Router
         $_SESSION['csrf_token'] = md5(uniqid(mt_rand(), true));
     }
 
-    public function crft_after()
+    public function csrf_after()
     {
-        if (!isset($_REQUEST['csrf_token']) || !isset($_SESSION['csrf_token']) || $_REQUEST['csrf_token'] !== $_SESSION['csrf_token']) {
+        if (!isset($_REQUEST['csrf_token']) || !isset($_SESSION['csrf_token']) || $_REQUEST['csrf_token'] != $_SESSION['csrf_token']) {
             exit();
         }
     }

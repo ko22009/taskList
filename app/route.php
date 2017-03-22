@@ -30,6 +30,7 @@ $router->before('GET', ['/signout', '/signin'], function() use($router) {
 
 $router->before('POST', ['/signout', '/signin'], function() use($router) {
     $router->is_auth();
+    $router->csrf_after();
 });
 
 $router->get('/user', 'controllerUser@index');
