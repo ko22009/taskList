@@ -1,5 +1,6 @@
 <h2>Форма входа!</h2>
 <form method="POST">
+    <input type="hidden" name="csrf_token" value="<?php if(isset($_SESSION['csrf_token'])) echo $_SESSION['csrf_token']; ?>" />
     <table>
         <tr>
             <td>Логин:</td>
@@ -15,3 +16,9 @@
         </tr>
     </table>
 </form>
+<script>
+    window.csrf = { csrf_token: '<?php if(isset($_SESSION['csrf_token'])) echo $_SESSION['csrf_token']; ?>' };
+    $.ajaxSetup({
+        data: window.csrf
+    });
+</script>

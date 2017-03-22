@@ -30,19 +30,19 @@ class controllerUser extends Controller
         {
             //$this->model->email
             //$this->model->login
-            if(!isset($_REQUEST['pass']) || empty($_REQUEST['pass'])) echo json_encode(new errorMessage("Пустое поле пароль")), exit;
-            if(!isset($_REQUEST['login']) || empty($_REQUEST['login'])) echo json_encode(new errorMessage("Пустое поле логин")), exit;
-            if(!isset($_REQUEST['email']) || empty($_REQUEST['email'])) echo json_encode(new errorMessage("Пустое поле email")), exit;
-            if(!isset($_REQUEST['pass2']) || empty($_REQUEST['pass2'])) echo json_encode(new errorMessage("Пустое поле подтверждение пароля")), exit;
+            if(!isset($_REQUEST['pass']) || empty($_REQUEST['pass'])) echo json_encode(new errorMessage(errorList::EmptyPass)), exit;
+            if(!isset($_REQUEST['login']) || empty($_REQUEST['login'])) echo json_encode(new errorMessage(errorList::EmptyLogin)), exit;
+            if(!isset($_REQUEST['email']) || empty($_REQUEST['email'])) echo json_encode(new errorMessage(errorList::EmptyEmail)), exit;
+            if(!isset($_REQUEST['pass2']) || empty($_REQUEST['pass2'])) echo json_encode(new errorMessage(errorList::EmptyPass2)), exit;
             $pass = $_REQUEST['pass'];
             $pass2 = $_REQUEST['pass2'];
             $email = $_REQUEST['email'];
             $login = $_REQUEST['login'];
-            if($pass != $pass2) echo json_encode(new errorMessage("Пароли не совпадают")), exit;
+            if($pass != $pass2) echo json_encode(new errorMessage(errorList::PassIsNotEqual)), exit;
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                echo json_encode(new errorMessage("Почта имеет не верный формат!")), exit;
+                echo json_encode(new errorMessage(errorList::MailIncorrect)), exit;
             }
-            if( strlen($login) < 3 ) echo json_encode(new errorMessage("Логин не может быть короче 3 символов!")), exit;
+            if( strlen($login) < 3 ) echo json_encode(new errorMessage(errorList::ShortLogin)), exit;
             $auth = $this->model->create($pass);
             switch ($auth)
             {
@@ -72,8 +72,8 @@ class controllerUser extends Controller
     {
         if(!isset($_SESSION['user_id']))
         {
-            if(!isset($_REQUEST['login']) || empty($_REQUEST['login'])) echo json_encode(new errorMessage("Пустое поле логин")), exit;
-            if(!isset($_REQUEST['pass']) || empty($_REQUEST['pass'])) echo json_encode(new errorMessage("Пустое поле пароль")), exit;
+            if(!isset($_REQUEST['login']) || empty($_REQUEST['login'])) echo json_encode(new errorMessage(errorList::EmptyLogin)), exit;
+            if(!isset($_REQUEST['pass']) || empty($_REQUEST['pass'])) echo json_encode(new errorMessage(errorList::EmptyPass)), exit;
             $this->model->login = $_REQUEST['login'];
             $this->model->pass = $_REQUEST['pass'];
             $auth = $this->model->auth();

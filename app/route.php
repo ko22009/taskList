@@ -23,6 +23,15 @@ $router->get('/signin', 'controllerUser@login_index');
 $router->post('/signin', 'controllerUser@login_in');
 $router->post('/logout', 'controllerUser@login_out');
 
+$router->before('GET', ['/signout', '/signin'], function() use($router) {
+    $router->csrf_before();
+    $router->is_auth();
+});
+
+$router->before('POST', ['/signout', '/signin'], function() use($router) {
+    $router->is_auth();
+});
+
 $router->get('/user', 'controllerUser@index');
 /**
 $router->mount('/user', function () use ($router) {

@@ -27,19 +27,19 @@ class modelUser extends Model
                     $_SESSION['user_id'] = $rows[0]['id'];
                     $this->id = $rows[0]['id'];
                     $this->email = $rows[0]['email'];
-                    return new successMessage(new errorList(errorList::LogInSuccess));
+                    return new successMessage(errorList::LogInSuccess);
                 }
                 else
                 {
-                    return new errorMessage(new errorList(errorList::InCorrectLoginOrPass));
+                    return new errorMessage(errorList::InCorrectLoginOrPass);
                 }
             }
             else
             {
-                return new errorMessage(new errorList(errorList::InCorrectLoginOrPass));
+                return new errorMessage(errorList::InCorrectLoginOrPass);
             }
         } else {
-            return new errorMessage(new errorList(errorList::IncorrectQuery));
+            return new errorMessage(errorList::IncorrectQuery);
         }
     }
 
@@ -49,12 +49,12 @@ class modelUser extends Model
         $stmt = $this->connection->prepare($query);
         if(!$stmt->execute([':login' => $this->login, ':email' => $this->email]))
         {
-            return new errorMessage(new errorList(errorList::IncorrectQuery));
+            return new errorMessage(errorList::IncorrectQuery);
         }
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         if(count($rows) > 0)
-            return new errorMessage(new errorList(errorList::OccupiedLoginOrEmail));
+            return new errorMessage(errorList::OccupiedLoginOrEmail);
 
         $this->pass = md5(md5($pass).$this->salt);
 
@@ -63,9 +63,9 @@ class modelUser extends Model
         $stmt = $this->connection->prepare($query);
         if ($stmt->execute([':login' => $this->login, ':email' => $this->email, ':pass' => $this->pass, ':salt' => md5($this->salt)])) {
             $this->id = $this->connection->lastInsertId();
-            return new successMessage(new errorList(errorList::SuccessRegistration));
+            return new successMessage(errorList::SuccessRegistration);
         } else {
-            return new errorMessage(new errorList(errorList::IncorrectQuery));
+            return new errorMessage(errorList::IncorrectQuery);
         }
     }
 

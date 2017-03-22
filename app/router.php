@@ -41,14 +41,28 @@ class Router
      */
     public function before($methods, $pattern, $fn)
     {
-        $pattern = $this->baseRoute . '/' . trim($pattern, '/');
-        $pattern = $this->baseRoute ? rtrim($pattern, '/') : $pattern;
-
-        foreach (explode('|', $methods) as $method) {
-            $this->beforeRoutes[$method][] = [
-                'pattern' => $pattern,
-                'fn' => $fn
-            ];
+        if(is_array($pattern)) {
+            foreach ($pattern as $item) {
+                $item = $this->baseRoute . '/' . trim($item, '/');
+                $item = $this->baseRoute ? rtrim($item, '/') : $item;
+                foreach (explode('|', $methods) as $method) {
+                    $this->beforeRoutes[$method][] = [
+                        'pattern' => $item,
+                        'fn' => $fn
+                    ];
+                }
+            }
+        }
+        else
+        {
+            $pattern = $this->baseRoute . '/' . trim($pattern, '/');
+            $pattern = $this->baseRoute ? rtrim($pattern, '/') : $pattern;
+            foreach (explode('|', $methods) as $method) {
+                $this->beforeRoutes[$method][] = [
+                    'pattern' => $pattern,
+                    'fn' => $fn
+                ];
+            }
         }
     }
 
@@ -374,5 +388,25 @@ class Router
         }
 
         return $this->serverBasePath;
+    }
+
+    public function csrf_before()
+    {
+        $_SESSION['csrf_token'] = md5(uniqid(mt_rand(), true));
+    }
+
+    public function crft_after()
+    {
+        if (!isset($_REQUEST['csrf_token']) || !isset($_SESSION['csrf_token']) || $_REQUEST['csrf_token'] !== $_SESSION['csrf_token']) {
+            exit();
+        }
+    }
+
+    public function is_auth()
+    {
+        if (isset($_SESSION['user_id'])) {
+            header("Location: http://" . $_SERVER['HTTP_HOST']);
+            exit();
+        }
     }
 }
