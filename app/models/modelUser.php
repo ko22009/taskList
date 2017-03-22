@@ -6,16 +6,66 @@ class modelUser extends Model
     public $login;
     public $email;
     public $pass;
+    private $salt;
 
-    function create()
+    function __construct()
     {
+        $this->salt = substr(md5(uniqid()), -8);
+        parent::__construct();
+    }
+
+    function auth()
+    {
+        $query = "SELECT * FROM users WHERE login=:login && pass=:pass";
+
+        $stmt = $this->connection->prepare($query);
+        if ($stmt->execute([':login' => $this->login, ':pass' => $this->pass])) {
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if(count($rows) > 0) {
+                if(md5(md5($_POST['pass']).$rows[0]['salt']) == $rows[0]['pass'])
+                {
+                    $_SESSION['user_id'] = $rows[0]['id'];
+                    $this->id = $rows[0]['id'];
+                    $this->email = $rows[0]['email'];
+                    return new successMessage(new errorList(errorList::LogInSuccess));
+                }
+                else
+                {
+                    return new errorMessage(new errorList(errorList::InCorrectLoginOrPass));
+                }
+            }
+            else
+            {
+                return new errorMessage(new errorList(errorList::InCorrectLoginOrPass));
+            }
+        } else {
+            return new errorMessage(new errorList(errorList::IncorrectQuery));
+        }
+    }
+
+    function create($pass)
+    {
+        $query = "SELECT login FROM users WHERE login = :login || email = :email";
+        $stmt = $this->connection->prepare($query);
+        if(!$stmt->execute([':login' => $this->login, ':email' => $this->email]))
+        {
+            return new errorMessage(new errorList(errorList::IncorrectQuery));
+        }
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if(count($rows) > 0)
+            return new errorMessage(new errorList(errorList::OccupiedLoginOrEmail));
+
+        $this->pass = md5(md5($pass).$this->salt);
+
         $query = "INSERT INTO users SET login=:login, email=:email, pass=:pass";
 
         $stmt = $this->connection->prepare($query);
-        if ($stmt->execute([':login' => $this->login, ':email' => $this->email, ':pass' => $this->pass])) {
-            return true;
+        if ($stmt->execute([':login' => $this->login, ':email' => $this->email, ':pass' => $this->pass, ':salt' => md5($this->salt)])) {
+            $this->id = $this->connection->lastInsertId();
+            return new successMessage(new errorList(errorList::SuccessRegistration));
         } else {
-            return false;
+            return new errorMessage(new errorList(errorList::IncorrectQuery));
         }
     }
 
