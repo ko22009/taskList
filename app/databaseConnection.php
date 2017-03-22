@@ -1,6 +1,6 @@
 <?php
 
-class databaseConnectionection
+class databaseConnection
 {
 
     private static $instance = null;
@@ -20,13 +20,13 @@ class databaseConnectionection
     public static function getInstance()
     {
         if (!self::$instance) {
-            self::$instance = new databaseConnectionection();
+            self::$instance = new databaseConnection();
         }
 
         return self::$instance;
     }
 
-    public function getConnectionection()
+    public function getConnection()
     {
         return $this->connection;
     }

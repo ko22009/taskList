@@ -21,6 +21,7 @@ gulp.task('browser-sync',['php'], function() {
 				port: 8082
 			}
 		},
+		open: false,
 		port: 8080,
 		notify: false
 	});

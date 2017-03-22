@@ -6,7 +6,7 @@ class Model
 
     function __construct()
     {
-        $db = databaseConnectionection::getInstance();
-        $this->connection = $db->getConnectionection();
+        $db = databaseConnection::getInstance();
+        $this->connection = $db->getConnection();
     }
 }

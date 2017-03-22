@@ -1,7 +1,5 @@
 <?php
 
-require_once 'app/models/modelUser.php';
-
 class controllerUser extends Controller
 {
 	function __construct()

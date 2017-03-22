@@ -1,10 +1,5 @@
 <?php
 
-require_once 'router.php';
-require_once 'controllers/controllerMain.php';
-require_once 'controllers/controller404.php';
-require_once 'controllers/controllerUser.php';
-
 $router = new Router();
 
 // Custom 404 Handler
@@ -24,6 +19,7 @@ $router->mount('/user', function () use ($router) {
 
 // will result in '/movies'
     $router->get('/', function () {
+        if(isset($_REQUEST['faa'])) var_dump($_REQUEST['faa']);
         $controller = new controllerUser();
         $controller->action_index();
     });
