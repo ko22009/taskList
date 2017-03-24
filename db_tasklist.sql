@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: localhost
--- Время создания: Мар 20 2017 г., 18:51
+-- Время создания: Мар 24 2017 г., 09:46
 -- Версия сервера: 5.7.11
 -- Версия PHP: 5.5.38
 
@@ -58,7 +58,8 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `login` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `pass` int(32) NOT NULL
+  `pass` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `salt` varchar(32) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
