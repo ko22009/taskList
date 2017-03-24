@@ -18,7 +18,9 @@
                 <?php if(!Router::is_auth()){?>
                     <li><a href="/signin">Войти</a></li>
                     <li class="last"><a href="/signout">Зарегистрироваться</a></li>
-                <?php } ?>
+                <?php } else { ?>
+                    <li class="last"><a href="/logout">Выйти</a></li>
+                <?php }?>
             </ul>
         </div>
     </div>

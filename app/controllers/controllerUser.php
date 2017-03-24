@@ -83,9 +83,10 @@ class controllerUser extends Controller
 
     function login_out()
     {
-        if(!isset($_SESSION['user_id']))
+        if(isset($_SESSION['user_id']))
         {
-            header("Location: http://".$_SERVER['HTTP_HOST']);
-        } else unset($_SESSION['user_id']);
+            unset($_SESSION['user_id']);
+        }
+        header("Location: http://" . $_SERVER['HTTP_HOST']);
     }
 }

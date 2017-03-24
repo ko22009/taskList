@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.4.1
--- http://www.phpmyadmin.net
+-- version 4.6.5.2
+-- https://www.phpmyadmin.net/
 --
--- Хост: localhost
--- Время создания: Мар 24 2017 г., 09:46
--- Версия сервера: 5.7.11
--- Версия PHP: 5.5.38
+-- Хост: 127.0.0.1
+-- Время создания: Мар 24 2017 г., 18:35
+-- Версия сервера: 10.1.21-MariaDB
+-- Версия PHP: 5.6.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -58,8 +58,7 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `login` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `pass` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `salt` varchar(32) COLLATE utf8_unicode_ci NOT NULL
+  `pass` varchar(32) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -105,7 +104,7 @@ ALTER TABLE `tasks`
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

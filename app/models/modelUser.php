@@ -6,23 +6,20 @@ class modelUser extends Model
     public $login;
     public $email;
     public $pass;
-    private $salt;
 
     function __construct()
     {
-        $this->salt = substr(md5(uniqid()), -8);
         parent::__construct();
     }
 
     function auth()
     {
-        $query = "SELECT * FROM users WHERE login=:login && pass=:pass";
-
+        $query = "SELECT * FROM users WHERE login=:login";
         $stmt = $this->connection->prepare($query);
-        if ($stmt->execute([':login' => $this->login, ':pass' => $this->pass])) {
+        if ($stmt->execute([':login' => $this->login])) {
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             if(count($rows) > 0) {
-                if(md5(md5($_POST['pass']).$rows[0]['salt']) == $rows[0]['pass'])
+                if (password_verify($this->pass, $rows[0]['pass']))
                 {
                     $_SESSION['user_id'] = $rows[0]['id'];
                     $this->id = $rows[0]['id'];
@@ -56,11 +53,11 @@ class modelUser extends Model
         if(count($rows) > 0)
             return new errorMessage(errorList::OccupiedLoginOrEmail);
 
-        $this->pass = md5(md5($pass).$this->salt);
+        $this->pass = password_hash($pass, PASSWORD_BCRYPT, ['cost' => 12]);
 
-        $query = "INSERT INTO users SET login=:login, email=:email, pass=:pass, salt=:salt";
+        $query = "INSERT INTO users SET login=:login, email=:email, pass=:pass";
         $stmt = $this->connection->prepare($query);
-        if ($stmt->execute([':login' => $this->login, ':email' => $this->email, ':pass' => $this->pass, ':salt' => md5($this->salt)])) {
+        if ($stmt->execute([':login' => $this->login, ':email' => $this->email, ':pass' => $this->pass])) {
             $this->id = $this->connection->lastInsertId();
             return new successMessage(errorList::SuccessRegistration);
         } else {

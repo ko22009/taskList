@@ -21,7 +21,7 @@ $router->get('/signout', 'controllerUser@register_index');
 $router->post('/signout', 'controllerUser@register_create');
 $router->get('/signin', 'controllerUser@login_index');
 $router->post('/signin', 'controllerUser@login_in');
-$router->post('/logout', 'controllerUser@login_out');
+$router->get('/logout', 'controllerUser@login_out');
 
 $router->before('GET', ['/signout', '/signin'], function() {
     Router::csrf_before();
