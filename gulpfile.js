@@ -49,6 +49,10 @@ gulp.task('watch', ['libs', 'browser-sync'], function() {
 	gulp.watch('app/views/*.php', browserSync.reload);
 });
 
+gulp.task('build', ['libs'], function() {
+	gulp.watch('app/js/*.js', ['libs']);
+});
+
 gulp.task('default', ['watch']);
 
 gulp.task('build', ['libs'], function() {

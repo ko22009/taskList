@@ -45,7 +45,7 @@ class modelUser extends Model
 
     function create($pass)
     {
-        $query = "SELECT login FROM users WHERE login = :login || email = :email";
+        /*$query = "SELECT login FROM users WHERE login = :login || email = :email";
         $stmt = $this->connection->prepare($query);
         if(!$stmt->execute([':login' => $this->login, ':email' => $this->email]))
         {
@@ -54,14 +54,14 @@ class modelUser extends Model
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         if(count($rows) > 0)
-            return new errorMessage(errorList::OccupiedLoginOrEmail);
+            return new errorMessage(errorList::OccupiedLoginOrEmail);*/
 
         $this->pass = md5(md5($pass).$this->salt);
+        $salt = md5($this->salt);
 
-        $query = "INSERT INTO users SET login=:login, email=:email, pass=:pass";
-
+        $query = "INSERT INTO users SET login=:login, email=:email, pass=:pass, salt=:salt";
         $stmt = $this->connection->prepare($query);
-        if ($stmt->execute([':login' => $this->login, ':email' => $this->email, ':pass' => $this->pass, ':salt' => md5($this->salt)])) {
+        if ($stmt->execute(['login' => $this->login, 'email' => $this->email, 'pass' => $this->pass, 'salt' => $salt])) {
             $this->id = $this->connection->lastInsertId();
             return new successMessage(errorList::SuccessRegistration);
         } else {

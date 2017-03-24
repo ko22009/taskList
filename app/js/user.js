@@ -22,10 +22,10 @@ module.exports = {
 	},
 	readItems: function () {
 		var item = $('.items-list tr#item');
-		$.ajax({url: '/user/readAll', success: function(result){
+		/*$.ajax({url: '/user/readAll', success: function(result){
 			//$(".items-list").html(result);
 			json
-		}});
+		}});*/
 		//item.children('login')
 	}
 };

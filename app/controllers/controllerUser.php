@@ -20,7 +20,8 @@ class controllerUser extends Controller
             header("Location: http://".$_SERVER['HTTP_HOST']);
         } else
         {
-            $this->view->generate('user/register.php', 'templateView.php');
+            $data['title'] = 'Регистрация';
+            $this->view->generate('user/register.php', 'templateView.php', $data);
         }
     }
 
@@ -44,16 +45,11 @@ class controllerUser extends Controller
             }
             if( strlen($login) < 3 ) echo json_encode(new errorMessage(errorList::ShortLogin)), exit;
             $auth = $this->model->create($pass);
-            switch ($auth)
+            if(property_exists($auth, 'success'))
             {
-                case 0:
-                default:
-                {
-                    $_SESSION['user_id'] = $this->model->id;
-                    header("Location: http://" . $_SERVER['HTTP_HOST']);
-
-                }
-            }
+                $_SESSION['user_id'] = $this->model->id;
+                header("Location: http://" . $_SERVER['HTTP_HOST']);
+            } else if(property_exists($auth, 'error')) echo json_encode($auth), exit;
         }
     }
 
@@ -64,7 +60,8 @@ class controllerUser extends Controller
             header("Location: http://".$_SERVER['HTTP_HOST']);
         } else
         {
-            $this->view->generate('user/login.php', 'templateView.php');
+            $data['title'] = 'Вход';
+            $this->view->generate('user/login.php', 'templateView.php', $data);
         }
     }
 

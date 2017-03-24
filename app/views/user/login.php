@@ -16,9 +16,3 @@
         </tr>
     </table>
 </form>
-<script>
-    window.csrf = { csrf_token: '<?php if(isset($_SESSION['csrf_token'])) echo $_SESSION['csrf_token']; ?>' };
-    $.ajaxSetup({
-        data: window.csrf
-    });
-</script>

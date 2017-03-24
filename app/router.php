@@ -390,23 +390,23 @@ class Router
         return $this->serverBasePath;
     }
 
-    public function csrf_before()
+    public static function csrf_before()
     {
         $_SESSION['csrf_token'] = md5(uniqid(mt_rand(), true));
     }
 
-    public function csrf_after()
+    public static function csrf_after()
     {
         if (!isset($_REQUEST['csrf_token']) || !isset($_SESSION['csrf_token']) || $_REQUEST['csrf_token'] != $_SESSION['csrf_token']) {
             exit();
         }
     }
 
-    public function is_auth()
+    public static function is_auth()
     {
         if (isset($_SESSION['user_id'])) {
-            header("Location: http://" . $_SERVER['HTTP_HOST']);
-            exit();
+            return true;
         }
+        return false;
     }
 }

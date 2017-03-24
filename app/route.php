@@ -23,14 +23,22 @@ $router->get('/signin', 'controllerUser@login_index');
 $router->post('/signin', 'controllerUser@login_in');
 $router->post('/logout', 'controllerUser@login_out');
 
-$router->before('GET', ['/signout', '/signin'], function() use($router) {
-    $router->csrf_before();
-    $router->is_auth();
+$router->before('GET', ['/signout', '/signin'], function() {
+    Router::csrf_before();
+    if(Router::is_auth())
+    {
+        header("Location: http://" . $_SERVER['HTTP_HOST']);
+        exit();
+    }
 });
 
-$router->before('POST', ['/signout', '/signin'], function() use($router) {
-    $router->is_auth();
-    $router->csrf_after();
+$router->before('POST', ['/signout', '/signin'], function() {
+    if(Router::is_auth())
+    {
+        header("Location: http://" . $_SERVER['HTTP_HOST']);
+        exit();
+    }
+    Router::csrf_after();
 });
 
 $router->get('/user', 'controllerUser@index');
