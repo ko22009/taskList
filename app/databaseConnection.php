@@ -8,7 +8,7 @@ class databaseConnection
 
     private $host = 'localhost';
     private $user = 'root';
-    private $pass = 'root';
+    private $pass = '';
     private $dbName = 'db_tasklist';
     private $options = [PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"];
 

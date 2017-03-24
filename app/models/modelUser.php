@@ -39,33 +39,32 @@ class modelUser extends Model
                 return new errorMessage(errorList::InCorrectLoginOrPass);
             }
         } else {
-            return new errorMessage(errorList::IncorrectQuery);
+            return new errorMessage($stmt->errorInfo());
         }
     }
 
     function create($pass)
     {
-        /*$query = "SELECT login FROM users WHERE login = :login || email = :email";
+        $query = "SELECT login FROM users WHERE login = :login || email = :email";
         $stmt = $this->connection->prepare($query);
         if(!$stmt->execute([':login' => $this->login, ':email' => $this->email]))
         {
-            return new errorMessage(errorList::IncorrectQuery);
+            return new errorMessage($stmt->errorInfo());
         }
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         if(count($rows) > 0)
-            return new errorMessage(errorList::OccupiedLoginOrEmail);*/
+            return new errorMessage(errorList::OccupiedLoginOrEmail);
 
         $this->pass = md5(md5($pass).$this->salt);
-        $salt = md5($this->salt);
 
         $query = "INSERT INTO users SET login=:login, email=:email, pass=:pass, salt=:salt";
         $stmt = $this->connection->prepare($query);
-        if ($stmt->execute(['login' => $this->login, 'email' => $this->email, 'pass' => $this->pass, 'salt' => $salt])) {
+        if ($stmt->execute([':login' => $this->login, ':email' => $this->email, ':pass' => $this->pass, ':salt' => md5($this->salt)])) {
             $this->id = $this->connection->lastInsertId();
             return new successMessage(errorList::SuccessRegistration);
         } else {
-            return new errorMessage(errorList::IncorrectQuery);
+            return new errorMessage($stmt->errorInfo());
         }
     }
 
@@ -80,7 +79,7 @@ class modelUser extends Model
 
     function update()
     {
-        $query = "UPDATE users SET login = :login, email = :email WHERE id = :id";
+        $query = "UPDATE users SET login=:login, email=:email WHERE id = :id";
 
         $stmt = $this->connection->prepare($query);
         if ($stmt->execute([':login' => $this->login, ':email' => $this->email, ':id' => $this->id])) {

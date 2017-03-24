@@ -1,20 +1,14 @@
 var gulp			= require('gulp'),
 	browserSync	= require('browser-sync'),
 	uglify			= require('gulp-uglify'),
-	php 				= require('gulp-connect-php'),
 	browserify 	= require('browserify'),
 	source = require('vinyl-source-stream'),
 	buffer = require('vinyl-buffer'),
 	sourcemaps = require('gulp-sourcemaps');
 
-
-gulp.task('php', function(){
-	php.server({ base: '.', keepalive:true, hostname: '127.0.0.1', port: 3000, open: false});
-});
-
-gulp.task('browser-sync',['php'], function() {
+gulp.task('browser-sync', function() {
 	browserSync({
-		proxy: '127.0.0.1:3000',
+		proxy: '127.0.0.1',
 		ui: {
 			port: 8081,
 			weinre: {

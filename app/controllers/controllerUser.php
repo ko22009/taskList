@@ -44,6 +44,8 @@ class controllerUser extends Controller
                 echo json_encode(new errorMessage(errorList::MailIncorrect)), exit;
             }
             if( strlen($login) < 3 ) echo json_encode(new errorMessage(errorList::ShortLogin)), exit;
+            $this->model->email = $email;
+            $this->model->login = $login;
             $auth = $this->model->create($pass);
             if(property_exists($auth, 'success'))
             {
