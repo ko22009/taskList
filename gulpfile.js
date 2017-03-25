@@ -24,7 +24,7 @@ gulp.task('browser-sync', function() {
 gulp.task('libs', function () {
 	// set up the browserify instance on a task basis
 	var b = browserify({
-		entries: './app/js/app.js',
+		entries: './app/assets/js/app.js',
 		debug: false
 	});
 
@@ -39,12 +39,12 @@ gulp.task('libs', function () {
 });
 
 gulp.task('watch', ['libs', 'browser-sync'], function() {
-	gulp.watch('app/js/*.js', ['libs', browserSync.reload]);
+	gulp.watch('app/assets/js/*.js', ['libs', browserSync.reload]);
 	gulp.watch('app/views/*.php', browserSync.reload);
 });
 
 gulp.task('build', ['libs'], function() {
-	gulp.watch('app/js/*.js', ['libs']);
+	gulp.watch('app/assets/js/*.js', ['libs']);
 });
 
 gulp.task('default', ['watch']);

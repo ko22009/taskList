@@ -23,6 +23,9 @@ $router->get('/signin', 'controllerUser@login_index');
 $router->post('/signin', 'controllerUser@login_in');
 $router->get('/logout', 'controllerUser@login_out');
 
+$router->get('/img', 'controllerImage@index');
+$router->post('/img', 'controllerImage@load');
+
 $router->before('GET', ['/signout', '/signin'], function() {
     Router::csrf_before();
     if(Router::is_auth())
@@ -40,8 +43,6 @@ $router->before('POST', ['/signout', '/signin'], function() {
     }
     Router::csrf_after();
 });
-
-$router->get('/user', 'controllerUser@index');
 /**
 $router->mount('/user', function () use ($router) {
     $router->get('/', 'controllerUser@index');

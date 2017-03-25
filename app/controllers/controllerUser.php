@@ -8,11 +8,6 @@ class controllerUser extends Controller
         parent::__construct();
     }
 
-    function index()
-    {
-        $this->view->generate('user/index.php', 'templateView.php');
-    }
-
     function register_index()
     {
         if(isset($_SESSION['user_id']))
