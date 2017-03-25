@@ -14,6 +14,7 @@
 
     <!-- Custom styles for this template -->
     <link href="/app/assets/css/jumbotron-narrow.css" rel="stylesheet">
+    <link href="/app/assets/css/style.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="/app/assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -26,8 +27,8 @@
     <![endif]-->
 </head>
 <body>
+<?php include 'app/views/header.php'; ?>
 <div class="container">
-    <?php include 'app/views/header.php'; ?>
     <?php include 'app/views/' . $content_view; ?>
     <br/>
     <footer class="footer">
@@ -42,6 +43,7 @@
         data: window.csrf
     });
 </script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script src="/app/assets/js/ie10-viewport-bug-workaround.js"></script>
 <?php if(isset($data['js'])) echo $data['js']?>
 </body>
