@@ -9,22 +9,7 @@ $router->set404(function () {
     $controller->index();
 });
 
-$router->mount('/api', function () use ($router) {
-    $router->mount('/user', function () use ($router) {
-
-    });
-});
-
 $router->get('/', 'controllerMain@index');
-
-$router->get('/signout', 'controllerUser@register_index');
-$router->post('/signout', 'controllerUser@register_create');
-$router->get('/signin', 'controllerUser@login_index');
-$router->post('/signin', 'controllerUser@login_in');
-$router->get('/logout', 'controllerUser@login_out');
-
-$router->get('/img', 'controllerImage@index');
-$router->post('/img', 'controllerImage@load');
 
 $router->before('GET', ['/signout', '/signin'], function() {
     Router::csrf_before();
@@ -43,6 +28,39 @@ $router->before('POST', ['/signout', '/signin'], function() {
     }
     Router::csrf_after();
 });
+
+$router->before('GET', '/logout', function() {
+    if(Router::is_auth())
+    {
+        header("Location: http://" . $_SERVER['HTTP_HOST']);
+        exit();
+    }
+});
+
+$router->get('/signout', 'controllerUser@register_index');
+$router->post('/signout', 'controllerUser@register_create');
+$router->get('/signin', 'controllerUser@login_index');
+$router->post('/signin', 'controllerUser@login_in');
+$router->get('/logout', 'controllerUser@login_out');
+
+$router->mount('/api', function () use ($router) {
+    $router->mount('/user', function () use ($router) {
+    });
+});
+
+$router->get('/img', 'controllerImage@index');
+$router->post('/img', 'controllerImage@load');
+
+$router->before('GET', '/list', function() {
+    if(!Router::is_auth())
+    {
+        header("Location: http://" . $_SERVER['HTTP_HOST']);
+        exit();
+    }
+});
+
+$router->get('/list', 'controllerList@index');
+
 /**
 $router->mount('/user', function () use ($router) {
     $router->get('/', 'controllerUser@index');

@@ -10,6 +10,11 @@
             <a class="navbar-brand" href="/">Task list</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <?php if(Router::is_auth()){?>
+                <li <?php active_button('list');?>><a href="/list">Списки</a></li>
+                <?php } ?>
+            </ul>
             <ul class="nav navbar-nav navbar-right">
                 <?php if(!Router::is_auth()){?>
                     <li <?php active_button('signin');?>><a href="/signin">Войти</a></li>

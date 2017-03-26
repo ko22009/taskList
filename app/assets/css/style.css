@@ -1,3 +1,11 @@
 body {
     padding-top: 70px; /* верхнее смещение, из-за меню*/
 }
+
+.list-group.list_of_items {
+    padding-top: 10px;
+}
+
+.list-group-item2 {
+    min-height: 54px;
+}
