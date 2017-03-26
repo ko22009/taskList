@@ -1,4 +1,3 @@
-<div class="container" id="main">
 <h1>Добавить новый список</h1>
 <form role="form" class="col-lg-6" style="padding: 0;" id="main_input_box">
     <div class="input-group">
@@ -10,6 +9,3 @@
 </form>
 <div class="clearfix"></div>
 <ol class="list-group list_of_items"></ol>
-</div>
-
-<?php $data['js']='<script src="/app/assets/js/list.js"></script>';?>

@@ -4,4 +4,3 @@
   <input id="button" type="submit" value="Upload">
 </form>
 <div id="err"></div>
-<?php $data['js']='<script src="/app/assets/js/img.js"></script>';?>
