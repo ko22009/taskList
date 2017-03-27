@@ -6,11 +6,11 @@ var conf = {
 	itemBox: "itembox",
 	createForm: "main_input_box", // id - задается в views/list/index.php
 	editForm: {
-		form: "form.edit_input_box",
-		button_edit: "button.edit",
-		button_cancel: "input.cancel",
-		button_save: "input.save",
-		button_delete: "button.delete"
+		form: "edit_input_box",
+		button_edit: "edit",
+		button_cancel: "cancel",
+		button_save: "save",
+		button_delete: "delete"
 	}
 };
 

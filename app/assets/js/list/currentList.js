@@ -14,11 +14,11 @@ var currentList = {
 		// кнопки справа - удалить и редактировать
 		var deleteButton = "<button class='delete btn btn-warning'>Удалить</button>";
 		var editButton = "<button class='edit btn btn-success'>Редактировать</button>";
-		var twoButtons = "<div class='btn-group pull-right'>" + deleteButton + editButton + "</div>";
+		var twoButtons = "<div class='btn-group right'>" + deleteButton + editButton + "</div>";
 
 		$(this.listItems).append(
-			"<li class='list-group-item " + conf.listItem + "'>"
-			+ "<span class='" + conf.listText + "'>"
+			"<li class='list-group-item " + conf.listItem + " clearfix'>"
+			+ "<span class='" + conf.listText + " left'>"
 			+ $(this.textBox).val()
 			+ "</span>"
 			+ twoButtons

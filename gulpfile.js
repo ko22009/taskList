@@ -4,7 +4,8 @@ var gulp			= require('gulp'),
 	browserify 	= require('browserify'),
 	source = require('vinyl-source-stream'),
 	buffer = require('vinyl-buffer'),
-	sourcemaps = require('gulp-sourcemaps');
+	sourcemaps = require('gulp-sourcemaps'),
+	_ = require('lodash');
 
 gulp.task('browser-sync', function() {
 	browserSync({
@@ -21,27 +22,31 @@ gulp.task('browser-sync', function() {
 	});
 });
 
-gulp.task('libs', function () {
-	// set up the browserify instance on a task basis
-	var b = browserify('./app/assets/js/app.js');
+gulp.task("libs", function(){
+	var destDir = "./app/bundles";
 
-	return b.bundle()
-		.pipe(source('app.js'))
-		.pipe(buffer())
-		.pipe(sourcemaps.init({loadMaps: true}))
-		// Add transformation tasks to the pipeline here.
-		.pipe(uglify())
-		.pipe(sourcemaps.write('./'))
-		.pipe(gulp.dest('./app'));
+	var bundleThis = function(srcArray) {
+		_.each(srcArray, function(src) {
+			var bundle = browserify(["./app/assets/js/" + src + ".js"]).bundle();
+			bundle.pipe(source(src + ".js"))
+				.pipe(buffer())
+				.pipe(sourcemaps.init({loadMaps: true}))
+				// Add transformation tasks to the pipeline here.
+				.pipe(uglify())
+				.pipe(sourcemaps.write('./'))
+				.pipe(gulp.dest(destDir));
+		});
+	};
+	bundleThis(["list", "app"]);
 });
 
 gulp.task('watch', ['libs', 'browser-sync'], function() {
-	gulp.watch('app/assets/js/*/*.js', ['libs', browserSync.reload]);
-	gulp.watch('app/views/*.php', browserSync.reload);
+	gulp.watch('app/assets/js/**/*.js', ['libs', browserSync.reload]);
+	gulp.watch('app/views/**/*.php', browserSync.reload);
 });
 
 gulp.task('build', ['libs'], function() {
-	gulp.watch('app/assets/js/*/*.js', ['libs']);
+	gulp.watch('app/assets/js/**/*.js', ['libs']);
 });
 
 gulp.task('default', ['watch']);

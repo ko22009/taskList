@@ -3,23 +3,29 @@ var currentList = require('./currentList');
 var listItems = "." + conf.listItems;
 var listItem = "." + conf.listItem;
 var createForm = "#" + conf.createForm;
+var editForm = "." + conf.editForm.form;
 var listText = "." + conf.listText;
+var button_delete = "." + conf.editForm.button_delete;
+var button_edit = "." + conf.editForm.button_edit;
+var button_cancel = "." + conf.editForm.button_cancel;
+var button_save = "." + conf.editForm.button_save;
 
 // создание нового значения
-$(createForm).submit(function(event){
+$(createForm).submit(function(){
 	//блокировка стандартного поведения
-	event.preventDefault();
+	//event.preventDefault();
 	currentList.create();
+	return false; // preventDefault
 });
 
 // удаление значения
-$(listItems).on("click", conf.editForm.button_delete, function(){
+$(listItems).on("click", button_delete, function(){
 	currentList.id = $(this).closest(listItem).attr("id");
 	currentList.remove($(this));
 });
 
 // редактирование записи
-$(listItems).on("click", conf.editForm.button_edit, function (){
+$(listItems).on("click", button_edit, function (){
 	currentList.name = $(this).closest(listItem).find(listText).text();
 	currentList.id = $(this).closest(listItem).attr("id");
 	// получение текстового значения в записи, на которой нажали кнопку редактировать
@@ -27,15 +33,15 @@ $(listItems).on("click", conf.editForm.button_edit, function (){
 	currentList.editForm($(this));
 
 	// отмена редактирования - должно быть внутри, иначе пустая замена
-	$(conf.editForm.form).on("click", conf.editForm.button_cancel, function(){
-		event.preventDefault(); // предотвращение стандартных событий - Form submission canceled because the form is not connected
+	$(editForm).on("click", button_cancel, function(){
 		currentList.cancel($(this));
+		return false;
 	});
 
 	// сохранение - должно быть внутри, иначе пустая замена
-	$(conf.editForm.form).on("click", conf.editForm.button_save, function () {
-		event.preventDefault();
+	$(editForm).on("click", button_save, function () {
 		currentList.save($(this));
+		return false;
 	});
 
 });

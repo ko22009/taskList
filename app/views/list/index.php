@@ -9,3 +9,4 @@
 </form>
 <div class="clearfix"></div>
 <ol class="list-group list_of_items"></ol>
+<?php $data['js']='<script src="/app/bundles/list.js"></script>';?>

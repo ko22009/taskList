@@ -31,12 +31,13 @@
     </footer>
 </div>
 
-<script src="/app/app.js"></script>
+<script src="/app/bundles/app.js"></script>
 <script>
     window.csrf = { csrf_token: '<?php if(isset($_SESSION['csrf_token'])) echo $_SESSION['csrf_token']; ?>' };
     $.ajaxSetup({
         data: window.csrf
     });
 </script>
+<?php if(isset($data['js'])) echo $data['js']?>
 </body>
 </html>

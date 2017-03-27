@@ -9,3 +9,11 @@ body {
 .list-group-item2 {
     min-height: 54px;
 }
+
+.right {
+    float: right;
+}
+
+.left {
+    float: left;
+}
