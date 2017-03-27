@@ -46,6 +46,12 @@ $router->get('/logout', 'controllerUser@login_out');
 $router->mount('/api', function () use ($router) {
     $router->mount('/user', function () use ($router) {
     });
+    $router->mount('/list', function () use ($router) {
+        $router->post('/create', 'controllerList@api_create');
+        $router->post('/read', 'controllerList@api_read');
+        $router->post('/update', 'controllerList@api_update');
+        $router->post('/delete', 'controllerList@api_delete');
+    });
 });
 
 $router->get('/img', 'controllerImage@index');

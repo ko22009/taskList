@@ -50,6 +50,3 @@ gulp.task('build', ['libs'], function() {
 });
 
 gulp.task('default', ['watch']);
-
-gulp.task('build', ['libs'], function() {
-});

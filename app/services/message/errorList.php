@@ -13,4 +13,7 @@ class errorList {
     const PassIsNotEqual = 'Пароли не совпадают';
     const MailIncorrect = 'Почта имеет неверный формат!';
     const ShortLogin = 'Логин не может быть короче 3 символов!';
+    const SuccessRemove = 'Успешно удалено';
+    const SuccessCreate = 'Успешно создано';
+    const SuccessUpdate = 'Успешно обновлено';
 }
