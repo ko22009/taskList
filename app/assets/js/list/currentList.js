@@ -9,13 +9,6 @@ var currentList = {
 	listItems: "." + conf.listItems,
 	listItem: "." + conf.listItem,
 	itemBox: "." + conf.itemBox,
-	/*read: function (id) {
-		var elem = listAjax.read(id);
-		if(elem != null)
-		{
-
-		}
-	},*/
 	clear: function () {
 		$(currentList.listItems).empty();
 	},
