@@ -47,6 +47,7 @@ function SortingTableCreator(htmlHref, sortHref) {
 		var sort = $(this).attr("data-sort");
 		self.num = $(this).closest('th').index();
 		var sortColumn = this;
+		$(self.ref).find('.cancel').click(); // убираем поле редактирование
 		if (sort == undefined) {
 			$(this).closest('th').find('span.sort').removeAttr("data-sort");
 			$(this).attr("data-sort", 1);

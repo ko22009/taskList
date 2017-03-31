@@ -5,6 +5,7 @@ var filterTable = function (HTMLTBodyRef, aFilters) {
 	for (var i = 0; i < aFilters.length; i++) {
 		filters[i] = new filterTable.Filter(aFilters[i]);
 		filters[i]._setAction(function () {
+			$(HTMLTBodyRef).find('.cancel').click(); // убираем поле редактирование
 			var rows = $(HTMLTBodyRef).children();
 			walkThrough(rows);
 		});
