@@ -1,114 +1,84 @@
-;(function () {
-	'use strict';
+// сортировка реализована только по одному элементу
+// для множественной сортировки, нужно реализовывать глубокое сравнение
 
-	function bind(func, context) {
-		return function() { // (*)
-			return func.apply(context, arguments);
-		};
-	}
+function SortingTableCreator(htmlHref, sortHref) {
+	var self = this; // чтобы не потерять контекст
+	self.ref = htmlHref;
+	self.srcRef = sortHref;
+	self.origin = '';
+	self.tableData = '';
+	self.num = 0;
+	self.rowData = '';
 
-	function copyToDom(obj) {
-		var tbody = [];
-		for (var i = 0; i < obj.length; i++) {
-			tbody[i] = $('<tr></tr>');
-			for (var key in obj[i]) {
-				if (obj[i].hasOwnProperty(key)) {
-					var elem = $('<td></td>').append(obj[i][key]);
-					$(tbody[i]).append(elem);
+	self.compare = function(asc) {
+		if (asc)
+		{
+			for(var i = 0; i < this.rowData.length - 1; i++){
+				for(var j = 0; j < this.rowData.length - (i + 1); j++){
+					if($(this.rowData.item(j).getElementsByTagName('td').item(this.num)).find('.custom_text').text() > $(this.rowData.item(j+1).getElementsByTagName('td').item(this.num)).find('.custom_text').text()){
+						this.tableData.insertBefore(this.rowData.item(j+1), this.rowData.item(j));
+					}
+				}
+			}
+		}else
+		{
+			for(var i = 0; i < this.rowData.length - 1; i++){
+				for(var j = 0; j < this.rowData.length - (i + 1); j++){
+					if($(this.rowData.item(j).getElementsByTagName('td').item(this.num)).find('.custom_text').text() < $(this.rowData.item(j+1).getElementsByTagName('td').item(this.num)).find('.custom_text').text()){
+						this.tableData.insertBefore(this.rowData.item(j+1), this.rowData.item(j));
+					}
 				}
 			}
 		}
-		$(this.ref).html(tbody);
 	}
 
-	function compareClassIncrease(arg1, arg2) {
-		if (arg1[this.num] < arg2[this.num]) return 1;
-		else if (arg1[this.num] > arg2[this.num]) return -1;
-		else return 0;
-	}
-
-	function compareClassDecrease(arg1, arg2) {
-		if (arg1[this.num] < arg2[this.num]) return -1;
-		else if (arg1[this.num] > arg2[this.num]) return 1;
-		else return 0;
-	}
-
-	// сортировка реализована только по одному элементу
-	// для множественной сортировки, нужно реализовывать глубокое сравнение
-
-	function SortingTableCreator(htmlHref, sortHref) {
-
-		var self = this; // чтобы не потерять контекст
-		self.ref = htmlHref;
-		self.srcRef = sortHref;
-		self.clone = '';
-		self.origin = '';
-
-		self.init = function () {
-			self.count = $(self.ref).find('tr:first').children('td').length;
-			SortingTableCreator.updateClone = bind(SortingTableCreator.updateClone, self);
-			SortingTableCreator.updateClone();
-			self.origin = JSON.parse(JSON.stringify(self.clone));
-			copyToDom = bind(copyToDom, self); // привязка к контексту
-			compareClassIncrease = bind(compareClassIncrease, self);
-			compareClassDecrease = bind(compareClassDecrease, self);
-			$(self.srcRef).click(function () {
-				self.sortColumn.call(this);
-			});
-		};
-
-		self.sortColumn = function () {
-			// globals
-			var sort = $(this).attr("data-sort");
-			var num = $(this).closest('td').index();
-			var sortColumn = this;
-			if (sort == undefined) {
-				$(this).closest('tr').find('td span').removeAttr("data-sort");
-				$(this).attr("data-sort", 1);
-				$(this).closest('tr').find('td span').removeClass().addClass('glyphicon glyphicon-sort');
-				$(this).removeClass().addClass('glyphicon glyphicon-sort-by-alphabet-alt');
-				self.clone.sort(compareClassIncrease); // привязали ф-цию к контексту
-				copyToDom(self.clone);
-			} else if (sort == 1) {
-				$(this).closest('tr').find('td span').removeAttr("data-sort");
-				$(this).attr("data-sort", -1);
-				$(this).closest('tr').find('td span').removeClass().addClass('glyphicon glyphicon-sort');
-				$(this).removeClass().addClass('glyphicon glyphicon-sort-by-alphabet');
-				self.clone.sort(compareClassDecrease);
-				copyToDom(self.clone);
-			} else if (sort == -1) {
-				$(this).closest('tr').find('td span').removeAttr("data-sort");
-				$(this).removeClass().addClass('glyphicon glyphicon-sort');
-				$(this).closest('tr').find('td input').val('');
-				self.clone = JSON.parse(JSON.stringify(self.origin));
-				copyToDom(self.origin);
-			}
-		};
-	}
-
-	// Статичный метод, чтобы можно было постучаться с фильтра - расширяем базовый прототип
-	SortingTableCreator.updateClone = function () {
-		var self = this;
-		var sortArrClass = [];
-		for (var i = 0; i < self.count; i++) {
-			var elem = $(self.ref).find('tr:visible td').filter(function (index) {
-				return index % self.count === i;
-			});
-			for (var j = 0; j < elem.length; j++) {
-				if (sortArrClass[j] == undefined) sortArrClass[j] = [];
-				sortArrClass[j][i] = $(elem[j]).text();
-			}
-		}
-		self.clone = JSON.parse(JSON.stringify(sortArrClass));
+	self.init = function () {
+		self.elem = $(self.ref);
+		self.tableData = document.getElementById('sorting').getElementsByTagName('tbody').item(0);
+		self.updateClone();
+		self.origin = $(self.rowData).clone(true, true);
+		$(self.srcRef).click(function () {
+			self.sortColumn.call(this);
+		});
 	};
 
-	function sortingTable(htmlHref, sortHref) {
-		var sortingTableInit = new SortingTableCreator(htmlHref, sortHref);
-		sortingTableInit.init();
-		window.updateClone = SortingTableCreator.updateClone;
-		// должно быть внутри, так как SortingTableCreator создается здесь и расширение updateClone доступным становится
-	}
+	self.sortColumn = function () {
+		// globals
+		var sort = $(this).attr("data-sort");
+		self.num = $(this).closest('th').index();
+		var sortColumn = this;
+		if (sort == undefined) {
+			$(this).closest('th').find('span.sort').removeAttr("data-sort");
+			$(this).attr("data-sort", 1);
+			$(this).closest('th').find('span.sort').removeClass().addClass('glyphicon glyphicon-sort sort');
+			$(this).removeClass().addClass('glyphicon glyphicon-sort-by-alphabet-alt sort');
+			self.compare(true);
+		} else if (sort == 1) {
+			$(this).closest('th').find('span.sort').removeAttr("data-sort");
+			$(this).attr("data-sort", -1);
+			$(this).closest('tr').find('span.sort').removeClass().addClass('glyphicon glyphicon-sort sort');
+			$(this).removeClass().addClass('glyphicon glyphicon-sort-by-alphabet sort');
+			self.compare(false);
+		} else if (sort == -1) {
+			$(this).closest('th').find('span.sort').removeAttr("data-sort");
+			$(this).removeClass().addClass('glyphicon glyphicon-sort sort');
+			self.clear();
+		}
+	};
 
-	window.sortingTable = sortingTable;
+	self.clear = function()
+	{
+		$('#filter input').val('');
+		$("#filter th span").removeAttr("data-sort");
+		$("#filter th span.sort").removeClass().addClass('glyphicon glyphicon-sort sort');
+		$(self.ref).html($(self.origin).clone(true, true));
+	};
 
-})();
+	self.updateClone = function () {
+		self.rowData = self.tableData.getElementsByTagName('tr');
+	};
+}
+
+module.exports = function (htmlHref, sortHref) {
+	return new SortingTableCreator(htmlHref, sortHref);
+};

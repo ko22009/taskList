@@ -1,13 +1,14 @@
 var conf = require('./conf');
 var Ajax = require('./ajax');
 var listAjax = new Ajax('list');
-
+var filterTable = require('./../filterTable');
+var sortingTable;
 var currentList = {
 	id: '',
 	name: '',
 	textBox: "#" + conf.textBox,
-	listItems: "." + conf.listItems,
-	listItem: "." + conf.listItem,
+	listItems: "#" + conf.listItems,
+	listItem: conf.listItem,
 	itemBox: "." + conf.itemBox,
 	clear: function () {
 		$(currentList.listItems).empty();
@@ -18,11 +19,14 @@ var currentList = {
 			$.each(data, function (index, info) {
 				currentList.createForm(info['name'], info['id']);
 			});
+
+			filterTable($('#target'), $('#filter input.string'));
+			sortingTable.init();
 		});
 	},
 	remove: function (elem) {
 		listAjax.delete(currentList.id, function () {
-			elem.closest("li").remove();
+			elem.closest(conf.listItem).remove();
 		});
 	},
 	create: function () {
@@ -33,6 +37,7 @@ var currentList = {
 				if(data.hasOwnProperty('success'))
 				{
 					currentList.createForm(data['name'], data['id']);
+					sortingTable.clear();
 				} else if(data.hasOwnProperty('error')) console.log(data['error']);
 			}
 		});
@@ -44,12 +49,14 @@ var currentList = {
 		var twoButtons = "<div class='btn-group right'>" + deleteButton + editButton + "</div>";
 
 		$(currentList.listItems).append(
-			"<li id='" + id + "' class='list-group-item " + conf.listItem + " clearfix'>"
+			"<tr id='" + id + "'>"
+			+ "<td>"
 			+ "<span class='" + conf.listText + " left'>"
 			+ name
 			+ "</span>"
 			+ twoButtons
-			+ "</li>"
+			+ "</td>"
+			+ "</tr>"
 		);
 		// очистка поля ввода
 		$(currentList.textBox).val('');
@@ -66,7 +73,7 @@ var currentList = {
 			"</div>" +
 			"</form>";
 		// вставляем форму редактирования вместо записи
-		elem.closest(currentList.listItem).html(editItemBox);
+		elem.closest(currentList.listItem).find('td').html(editItemBox);
 	},
 	save: function (elem) {
 		var id = currentList.id;
@@ -87,10 +94,12 @@ var currentList = {
 		var editButton = "<button class='edit btn btn-success'>Редактировать</button>";
 		var twoButtons = "<div class='btn-group pull-right'>" + deleteButton + editButton + "</div>";
 		elem.closest(currentList.listItem).html(
+			"<td>" +
 			"<span class='" + conf.listText + "'>" +
 			name +
 			"</span>" +
-			twoButtons
+			twoButtons +
+			"</td>"
 		);
 	},
 	cancel: function (elem) {
@@ -98,12 +107,17 @@ var currentList = {
 		var editButton = "<button class='edit btn btn-success'>Редактировать</button>";
 		var twoButtons = "<div class='btn-group pull-right'>" + deleteButton + editButton + "</div>";
 		elem.closest(currentList.listItem).html(
+			"<td>" +
 			"<span class='" + conf.listText + "'>" +
 			currentList.name +
 			"</span>"+
-			twoButtons
+			twoButtons +
+			"</td>"
 		);
 	}
 };
 
-module.exports = currentList;
+module.exports = function (sorting) {
+	sortingTable = sorting;
+	return currentList;
+};

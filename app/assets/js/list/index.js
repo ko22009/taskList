@@ -1,7 +1,9 @@
 var conf = require('./conf');
-var currentList = require('./currentList');
-var listItems = "." + conf.listItems;
-var listItem = "." + conf.listItem;
+var sortingTable = require('./../sortingTable');
+sortingTable = sortingTable($('#target'), $('.sort'));
+var currentList = require('./currentList')(sortingTable);
+var listItems = "#" + conf.listItems;
+var listItem = conf.listItem;
 var createForm = "#" + conf.createForm;
 var editForm = "." + conf.editForm.form;
 var listText = "." + conf.listText;

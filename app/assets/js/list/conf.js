@@ -1,6 +1,6 @@
 var conf = {
-	listItems: "list_of_items", // list_of_items - задается в views/list/index.php
-	listItem: 'list-group-item2',
+	listItems: "target", // list_of_items - задается в views/list/index.php
+	listItem: 'tr',
 	listText: "custom_text",
 	textBox: "custom_textbox", // id - задается в views/list/index.php
 	itemBox: "itembox",
