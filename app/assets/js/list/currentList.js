@@ -37,6 +37,7 @@ var currentList = {
 				if(data.hasOwnProperty('success'))
 				{
 					currentList.createForm(data['name'], data['id']);
+					currentList.readAll();
 					sortingTable.clear();
 				} else if(data.hasOwnProperty('error')) console.log(data['error']);
 			}

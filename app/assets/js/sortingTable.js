@@ -62,6 +62,8 @@ function SortingTableCreator(htmlHref, sortHref) {
 		} else if (sort == -1) {
 			$(this).closest('th').find('span.sort').removeAttr("data-sort");
 			$(this).removeClass().addClass('glyphicon glyphicon-sort sort');
+			// если не добавляли ничего нового
+			$(self.ref).html($(self.origin).clone(true, true));
 			self.clear();
 		}
 	};
@@ -71,9 +73,8 @@ function SortingTableCreator(htmlHref, sortHref) {
 		$('#filter input').val('');
 		$("#filter th span").removeAttr("data-sort");
 		$("#filter th span.sort").removeClass().addClass('glyphicon glyphicon-sort sort');
-		$(self.ref).html($(self.origin).clone(true, true));
+		self.origin = $(self.rowData).clone(true, true);
 	};
-
 	self.updateClone = function () {
 		self.rowData = self.tableData.getElementsByTagName('tr');
 	};
