@@ -1,6 +1,6 @@
 var conf = require('./conf');
 var sortingTable = require('./../sortingTable');
-sortingTable = sortingTable($('#target'), $('.sort'));
+sortingTable = sortingTable('#target', '.sort');
 var currentList = require('./currentList')(sortingTable);
 var listItems = "#" + conf.listItems;
 var listItem = conf.listItem;

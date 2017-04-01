@@ -11,7 +11,7 @@ var currentList = {
 	listItem: conf.listItem,
 	itemBox: "." + conf.itemBox,
 	clear: function () {
-		$(currentList.listItems).empty();
+		$(this.listItems).empty();
 	},
 	readAll: function () {
 		currentList.clear();
@@ -19,8 +19,7 @@ var currentList = {
 			$.each(data, function (index, info) {
 				currentList.createForm(info['name'], info['id']);
 			});
-
-			filterTable($('#target'), $('#filter input.string'));
+			filterTable('#target', $('#filter input.string'));
 			sortingTable.init();
 		});
 	},
@@ -37,8 +36,6 @@ var currentList = {
 				if(data.hasOwnProperty('success'))
 				{
 					currentList.createForm(data['name'], data['id']);
-					currentList.readAll();
-					sortingTable.clear();
 				} else if(data.hasOwnProperty('error')) console.log(data['error']);
 			}
 		});
@@ -48,8 +45,7 @@ var currentList = {
 		var deleteButton = "<button class='delete btn btn-warning'>Удалить</button>";
 		var editButton = "<button class='edit btn btn-success'>Редактировать</button>";
 		var twoButtons = "<div class='btn-group right'>" + deleteButton + editButton + "</div>";
-
-		$(currentList.listItems).append(
+		$(this.listItems).append(
 			"<tr id='" + id + "'>"
 			+ "<td>"
 			+ "<span class='" + conf.listText + " left'>"
