@@ -13,7 +13,7 @@ function SortingTableCreator(htmlHref, sortHref) {
 		{
 			for(var i = 0; i < self.rowData.length - 1; i++){
 				for(var j = 0; j < self.rowData.length - (i + 1); j++){
-					if(self.rowData.item(j).getElementsByTagName('td').item(0).innerHTML > self.rowData.item(j+1).getElementsByTagName('td').item(0).innerHTML){
+					if(self.rowData[j].getElementsByTagName('td')[self.num].getElementsByClassName('custom_text')[0].innerHTML > self.rowData[j+1].getElementsByTagName('td')[self.num].getElementsByClassName('custom_text')[0].innerHTML){
 						self.tableData.insertBefore(self.rowData.item(j+1), self.rowData.item(j));
 					}
 				}
@@ -22,7 +22,7 @@ function SortingTableCreator(htmlHref, sortHref) {
 		{
 			for(var i = 0; i < self.rowData.length - 1; i++){
 				for(var j = 0; j < self.rowData.length - (i + 1); j++){
-					if(self.rowData.item(j).getElementsByTagName('td').item(0).innerHTML < self.rowData.item(j+1).getElementsByTagName('td').item(0).innerHTML){
+					if(self.rowData[j].getElementsByTagName('td')[self.num].getElementsByClassName('custom_text')[0].innerHTML < self.rowData[j+1].getElementsByTagName('td')[self.num].getElementsByClassName('custom_text')[0].innerHTML){
 						self.tableData.insertBefore(self.rowData.item(j+1), self.rowData.item(j));
 					}
 				}
