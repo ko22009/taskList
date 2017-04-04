@@ -8,46 +8,41 @@ function SortingTableCreator(htmlHref, sortHref) {
 	self.tableData = '';
 	self.num = 0;
 	self.rowData = '';
-
 	self.compare = function(type) {
 		if(type == 1)
 		{
 			for(var i = 0; i < self.rowData.length - 1; i++){
-				for(var j = 0; j < self.rowData.length; j++){
-					if(i != j)
-					if($($(self.rowData[i]).find('td')[self.num]).find('.custom_text').text().toLowerCase() < $($(self.rowData[j]).find('td')[self.num]).find('.custom_text').text().toLowerCase()){
-						$(self.rowData[j]).insertBefore($(self.rowData[i]));
+				for(var j = 0; j < self.rowData.length - (i + 1); j++){
+					if(self.rowData.item(j).getElementsByTagName('td').item(0).innerHTML > self.rowData.item(j+1).getElementsByTagName('td').item(0).innerHTML){
+						self.tableData.insertBefore(self.rowData.item(j+1), self.rowData.item(j));
 					}
 				}
 			}
 		}else if (type == 2)
 		{
 			for(var i = 0; i < self.rowData.length - 1; i++){
-				for(var j = 0; j < self.rowData.length; j++){
-					if(i != j)
-					if($($(self.rowData[i]).find('td')[self.num]).find('.custom_text').text().toLowerCase() > $($(self.rowData[j]).find('td')[self.num]).find('.custom_text').text().toLowerCase()){
-						$(self.rowData[j]).insertBefore($(self.rowData[i]));
+				for(var j = 0; j < self.rowData.length - (i + 1); j++){
+					if(self.rowData.item(j).getElementsByTagName('td').item(0).innerHTML < self.rowData.item(j+1).getElementsByTagName('td').item(0).innerHTML){
+						self.tableData.insertBefore(self.rowData.item(j+1), self.rowData.item(j));
 					}
 				}
 			}
 		} else if(type == 3)
 		{
 			for(var i = 0; i < self.rowData.length - 1; i++){
-				for(var j = 0; j < self.rowData.length; j++){
-					if(i != j)
-					if($(self.rowData[i]).attr('id') < $(self.rowData[j]).attr('id')){
-						$(self.rowData[i]).insertBefore($(self.rowData[j]));
+				for(var j = 0; j < self.rowData.length - (i + 1); j++){
+					if(self.rowData.item(j).id > self.rowData.item(j+1).id){
+						self.tableData.insertBefore(self.rowData.item(j+1), self.rowData.item(j));
 					}
 				}
 			}
 		}
-		console.log($('#target').children());
 	};
 
 	self.init = function () {
 		self.elem = $(self.ref);
-		self.tableData = $('#sorting tbody');
-		self.rowData = $(self.tableData).find('tr');
+		self.tableData = document.getElementsByTagName('tbody').item(0);
+		self.rowData = self.tableData.getElementsByTagName('tr');
 		$(self.srcRef).click(function () {
 			self.sortColumn.call(this);
 		});

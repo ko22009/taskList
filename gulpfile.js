@@ -5,7 +5,7 @@ var gulp			= require('gulp'),
 	source = require('vinyl-source-stream'),
 	buffer = require('vinyl-buffer'),
 	sourcemaps = require('gulp-sourcemaps'),
-	_ = require('lodash');
+	reload = browserSync.reload;
 
 gulp.task('browser-sync', function() {
 	browserSync({
@@ -24,9 +24,10 @@ gulp.task('browser-sync', function() {
 
 gulp.task("libs", function(){
 	var destDir = "./app/bundles";
-
+	var count = 0;
 	var bundleThis = function(srcArray) {
-		_.each(srcArray, function(src) {
+		srcArray.forEach(function(src) {
+			count++;
 			var bundle = browserify(["./app/assets/js/" + src + ".js"]).bundle();
 			bundle.pipe(source(src + ".js"))
 				.pipe(buffer())
@@ -34,15 +35,16 @@ gulp.task("libs", function(){
 				// Add transformation tasks to the pipeline here.
 				.pipe(uglify())
 				.pipe(sourcemaps.write('./'))
-				.pipe(gulp.dest(destDir));
+				.pipe(gulp.dest(destDir))
+				.pipe(reload({stream:true})); // для каждого файла обновляем браузер
 		});
 	};
 	bundleThis(["list", "app"]);
 });
 
 gulp.task('watch', ['libs', 'browser-sync'], function() {
-	gulp.watch('app/assets/js/**/*.js', ['libs', browserSync.reload]);
-	gulp.watch('app/views/**/*.php', browserSync.reload);
+	gulp.watch('app/assets/js/**/*.js', ['libs']);
+	gulp.watch('app/views/**/*.php', reload({stream:true}));
 });
 
 gulp.task('build', ['libs'], function() {
