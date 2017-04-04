@@ -7,32 +7,33 @@ function SortingTableCreator(htmlHref, sortHref) {
 	self.srcRef = sortHref;
 	self.tableData = '';
 	self.num = 0;
+	self.type = 0;
 	self.rowData = '';
-	self.compare = function(type) {
-		if(type == 1)
-		{
-			for(var i = 0; i < self.rowData.length - 1; i++){
-				for(var j = 0; j < self.rowData.length - (i + 1); j++){
-					if(self.rowData[j].getElementsByTagName('td')[self.num].getElementsByClassName('custom_text')[0].innerHTML > self.rowData[j+1].getElementsByTagName('td')[self.num].getElementsByClassName('custom_text')[0].innerHTML){
-						self.tableData.insertBefore(self.rowData.item(j+1), self.rowData.item(j));
-					}
-				}
-			}
-		}else if (type == 2)
+	self.compare = function() {
+		if(self.type == 1)
 		{
 			for(var i = 0; i < self.rowData.length - 1; i++){
 				for(var j = 0; j < self.rowData.length - (i + 1); j++){
 					if(self.rowData[j].getElementsByTagName('td')[self.num].getElementsByClassName('custom_text')[0].innerHTML < self.rowData[j+1].getElementsByTagName('td')[self.num].getElementsByClassName('custom_text')[0].innerHTML){
-						self.tableData.insertBefore(self.rowData.item(j+1), self.rowData.item(j));
+						self.tableData.insertBefore(self.rowData[j+1], self.rowData[j]);
 					}
 				}
 			}
-		} else if(type == 3)
+		}else if (self.type == 2)
 		{
 			for(var i = 0; i < self.rowData.length - 1; i++){
 				for(var j = 0; j < self.rowData.length - (i + 1); j++){
-					if(self.rowData.item(j).id > self.rowData.item(j+1).id){
-						self.tableData.insertBefore(self.rowData.item(j+1), self.rowData.item(j));
+					if(self.rowData[j].getElementsByTagName('td')[self.num].getElementsByClassName('custom_text')[0].innerHTML > self.rowData[j+1].getElementsByTagName('td')[self.num].getElementsByClassName('custom_text')[0].innerHTML){
+						self.tableData.insertBefore(self.rowData[j+1], self.rowData[j]);
+					}
+				}
+			}
+		} else if(self.type == 3)
+		{
+			for(var i = 0; i < self.rowData.length - 1; i++){
+				for(var j = 0; j < self.rowData.length - (i + 1); j++){
+					if(self.rowData[j].id > self.rowData[j+1].id){
+						self.tableData.insertBefore(self.rowData[j+1], self.rowData[j]);
 					}
 				}
 			}
@@ -58,23 +59,26 @@ function SortingTableCreator(htmlHref, sortHref) {
 			$(this).attr("data-sort", 1);
 			$(this).closest('th').find('span.sort').removeClass().addClass('glyphicon glyphicon-sort sort');
 			$(this).removeClass().addClass('glyphicon glyphicon-sort-by-alphabet-alt sort');
-			self.compare(1);
+			self.type = 1;
+			self.compare();
 		} else if (sort == 1) {
 			$(this).closest('th').find('span.sort').removeAttr("data-sort");
 			$(this).attr("data-sort", -1);
 			$(this).closest('tr').find('span.sort').removeClass().addClass('glyphicon glyphicon-sort sort');
 			$(this).removeClass().addClass('glyphicon glyphicon-sort-by-alphabet sort');
-			self.compare(2);
+			self.type = 2;
+			self.compare();
 		} else if (sort == -1) {
 			$(this).closest('th').find('span.sort').removeAttr("data-sort");
 			$(this).removeClass().addClass('glyphicon glyphicon-sort sort');
-			self.compare(3);
+			self.type = 3;
+			self.compare();
 			self.clear();
 		}
 	};
 
 	self.clear = function() {
-		$('#filter input').val('');
+		$('#filter input').val('').keyup(); // keyup update after clear filter
 		$("#filter th span").removeAttr("data-sort");
 		$("#filter th span.sort").removeClass().addClass('glyphicon glyphicon-sort sort');
 	};

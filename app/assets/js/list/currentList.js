@@ -36,6 +36,7 @@ var currentList = {
 				if(data.hasOwnProperty('success'))
 				{
 					currentList.createForm(data['name'], data['id']);
+					sortingTable.compare(); // after add update sort
 				} else if(data.hasOwnProperty('error')) console.log(data['error']);
 			}
 		});
@@ -81,6 +82,8 @@ var currentList = {
 				if(data.hasOwnProperty('success'))
 				{
 					currentList.saveForm(elem, name);
+					$('#filter input').keyup(); // after edit update filter
+					sortingTable.compare(); // after edit update sort
 				} else if(data.hasOwnProperty('error')) console.log(data['error']);
 			}
 		});
