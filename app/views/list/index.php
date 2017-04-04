@@ -14,7 +14,7 @@
     <tr id="filter">
         <th>
             <span>Название списка</span>
-            <input class="string form-control" style="display: inline-block;width: auto;padding: 0;" />
+            <input class="string form-control" style="display: inline-block;width: auto;" />
             <span class="glyphicon glyphicon-sort sort"></span>
         </th>
     </tr>
