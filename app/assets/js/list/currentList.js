@@ -37,6 +37,7 @@ var currentList = {
 				{
 					currentList.createForm(data['name'], data['id']);
 					sortingTable.compare(); // after add update sort
+					$('#filter input').keyup(); // after add update filter
 				} else if(data.hasOwnProperty('error')) console.log(data['error']);
 			}
 		});
