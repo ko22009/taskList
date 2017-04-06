@@ -17,3 +17,19 @@ body {
 .left {
     float: left;
 }
+
+.form-task {
+    width: 135px;
+}
+
+.input-group-btn {
+    width: auto;
+}
+
+.input-group-addon {
+    width: 140px !important;
+    line-height: 100%;
+    line-height: inherit;
+    border-top-left-radius: 5px !important;
+    border-bottom-left-radius: 5px !important;
+}

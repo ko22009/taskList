@@ -39,7 +39,7 @@ gulp.task("libs", function(){
 				.pipe(reload({stream:true})); // для каждого файла обновляем браузер
 		});
 	};
-	bundleThis(["list", "app"]);
+	bundleThis(["list", "app", "task"]);
 });
 
 gulp.task('watch', ['libs', 'browser-sync'], function() {

@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <!-- Custom styles for this template -->
     <link href="/app/assets/css/jumbotron-narrow.css" rel="stylesheet">
-    <link href="/app/assets/css/style.css" rel="stylesheet">
+    <link href="/app/assets/css/style.css?v=<?=time();?>" rel="stylesheet">
 </head>
 <body>
 <?php include 'app/views/header.php'; ?>
@@ -24,6 +24,7 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="/app/bundles/app.js"></script>
 <script>
     window.csrf = { csrf_token: '<?php if(isset($_SESSION['csrf_token'])) echo $_SESSION['csrf_token']; ?>' };

@@ -57,15 +57,15 @@ function Convert(num, aCase, aBool) {
 
 function Proper(num, aArr) {
 	num = Simple(num);
-	if(num == 1) return aArr[0]; // первое число, единичное число - тысяча
-	else if(num < 5 && num) return aArr[1]; // первая половина - тысячи
-	else return aArr[2]; // все остальное - тысяч
+	if(num == 1) return aArr[0];
+	else if(num < 5 && num) return aArr[1];
+	else return aArr[2];
 }
 
 function Simple(num) {
-	if(num < 20) return num; // единицы
-	else if(num < 100) return num % 10; // десятки
-	else return arguments.callee(num % 100); // сотни
+	if(num < 20) return num;
+	else if(num < 100) return num % 10;
+	else return arguments.callee(num % 100);
 }
 
 function Join() {
