@@ -16,4 +16,6 @@ class errorList {
     const SuccessRemove = 'Успешно удалено';
     const SuccessCreate = 'Успешно создано';
     const SuccessUpdate = 'Успешно обновлено';
+    const EmptyName = 'Пустое поле имя';
+    const EmptySurname = 'Пустое поле фамилия';
 }

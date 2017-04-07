@@ -1,23 +1,41 @@
 'use strict';
 
 $(document).on('change', ':file', function() {
-	var input = $(this),
-		numFiles = input.get(0).files ? input.get(0).files.length : 1,
-		label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-	input.trigger('fileselect', [numFiles, label]);
-});
+	var input = $(this);
+	var	label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+	var file = this.files[0];
+	console.log(file); // size, type
+	//label
+	input = $(this).parents('.input-group').find(':text');
+	if( input.length ) {
+		input.val(label);
+	} else {
+		if( log ) alert(label);
+	}
 
-// We can watch for our custom `fileselect` event like this
-$(document).ready( function() {
-	$(':file').on('fileselect', function(event, numFiles, label) {
+	var fd = new FormData;
+	fd.append('image', file);
 
-		var input = $(this).parents('.input-group').find(':text'),
-			log = numFiles > 1 ? numFiles + ' files selected' : label;
-
-		if( input.length ) {
-			input.val(log);
-		} else {
-			if( log ) alert(log);
+	$.ajax({
+		url: '/img',
+		type: 'POST',
+		processData: false,
+		contentType: false,
+		data: fd,
+		success: function( respond, textStatus, jqXHR ){
+			// Если все ОК
+			if( typeof respond.error === 'undefined' ){
+				// Файлы успешно загружены, делаем что нибудь здесь
+				$('.ajax-respond').html( respond );
+			}
+			else{
+				console.log('ОШИБКИ ОТВЕТА сервера: ' + respond.error );
+			}
+		},
+		error: function( jqXHR, textStatus, errorThrown ){
+			console.log('ОШИБКИ AJAX запроса: ' + textStatus );
 		}
 	});
+
+
 });

@@ -46,28 +46,28 @@
             <div class="modal-body">
                 <div class="input-group">
                     <span class="input-group-addon">Имя</span>
-                    <input id="msg" type="text" class="string form-control form-task" name="msg">
+                    <input type="text" class="string form-control form-task" name="name">
                 </div>
                 <div class="input-group">
                     <span class="input-group-addon">Фамилия</span>
-                    <input id="msg" type="text" class="string form-control form-task" name="msg">
+                    <input type="text" class="string form-control form-task" name="surname">
                 </div>
                 <div class="input-group">
                     <span class="input-group-addon">Телефон</span>
-                    <input id="msg" type="text" class="string form-control form-task" name="msg">
+                    <input type="text" class="string form-control form-task" name="phone">
                 </div>
                 <div class="input-group">
                     <span class="input-group-addon">email</span>
-                    <input id="msg" type="text" class="string form-control form-task" name="msg">
+                    <input type="text" class="string form-control form-task" name="email">
                 </div>
                 <div class="input-group">
                     <label class="input-group-btn">
                     <span class="btn btn-primary input-group-addon">
                         Загрузить фото&hellip;
-                        <input type="file" style="display: none;" multiple>
+                        <input type="file" style="display: none;">
                     </span>
                     </label>
-                    <input type="text" class="form-control" readonly>
+                    <input type="text" class="form-control" name="file" readonly>
                 </div>
             </div>
             <div class="modal-footer">
@@ -76,6 +76,9 @@
             </div>
         </div>
     </div>
+</div>
+<div class="ajax-respond">
+
 </div>
 <?php $data['js'] = '<script src="/app/bundles/task.js"></script>
 <script>

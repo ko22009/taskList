@@ -29,8 +29,17 @@ $router->before('POST', ['/signout', '/signin'], function() {
     Router::csrf_after();
 });
 
-$router->before('GET', '/logout', function() {
-    if(Router::is_auth())
+$router->before('POST', ['/api/list/.*'], function() {
+    if(!Router::is_auth())
+    {
+        header("Location: http://" . $_SERVER['HTTP_HOST']);
+        exit();
+    }
+    Router::csrf_after();
+});
+
+$router->before('GET', ['/logout', '/list/(\d+)', '/list', '/task'], function() {
+    if(!Router::is_auth())
     {
         header("Location: http://" . $_SERVER['HTTP_HOST']);
         exit();
@@ -51,22 +60,18 @@ $router->mount('/api', function () use ($router) {
         $router->post('/read', 'controllerList@api_read');
         $router->post('/update', 'controllerList@api_update');
         $router->post('/delete', 'controllerList@api_delete');
+        $router->post('/(\d+)/create', 'controllerTask@api_create');
+        $router->post('/(\d+)/read', 'controllerTask@api_read');
+        $router->post('/(\d+)/update', 'controllerTask@api_update');
+        $router->post('/(\d+)/delete', 'controllerTask@api_delete');
     });
 });
 
 $router->get('/img', 'controllerImage@index');
 $router->post('/img', 'controllerImage@load');
 
-$router->before('GET', ['/list', '/task'], function() {
-    if(!Router::is_auth())
-    {
-        header("Location: http://" . $_SERVER['HTTP_HOST']);
-        exit();
-    }
-});
-
 $router->get('/list', 'controllerList@index');
-$router->get('/task', 'controllerTask@index');
+$router->get('/list/(\d+)', 'controllerTask@index');
 
 /**
 $router->mount('/user', function () use ($router) {
