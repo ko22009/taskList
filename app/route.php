@@ -57,7 +57,7 @@ $router->mount('/api', function () use ($router) {
 $router->get('/img', 'controllerImage@index');
 $router->post('/img', 'controllerImage@load');
 
-$router->before('GET', '/list', function() {
+$router->before('GET', ['/list', '/task'], function() {
     if(!Router::is_auth())
     {
         header("Location: http://" . $_SERVER['HTTP_HOST']);
@@ -66,6 +66,7 @@ $router->before('GET', '/list', function() {
 });
 
 $router->get('/list', 'controllerList@index');
+$router->get('/task', 'controllerTask@index');
 
 /**
 $router->mount('/user', function () use ($router) {
