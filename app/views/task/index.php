@@ -67,8 +67,9 @@
                         <input type="file" style="display: none;">
                     </span>
                     </label>
-                    <input type="text" class="form-control" name="file" readonly>
+                    <input type="text" class="form-control right-border" name="file" readonly>
                 </div>
+                <span class="ajax-error" style="display: none"></span>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
@@ -77,12 +78,4 @@
         </div>
     </div>
 </div>
-<div class="ajax-respond">
-
-</div>
-<?php $data['js'] = '<script src="/app/bundles/task.js"></script>
-<script>
-    $("#myModal").on("click", ".save", function () {
-        $("#myModal").modal("hide");
-    })
-</script>'; ?>
+<?php $data['js'] = '<script src="/app/bundles/task.js"></script>'?>

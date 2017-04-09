@@ -67,9 +67,6 @@ $router->mount('/api', function () use ($router) {
     });
 });
 
-$router->get('/img', 'controllerImage@index');
-$router->post('/img', 'controllerImage@load');
-
 $router->get('/list', 'controllerList@index');
 $router->get('/list/(\d+)', 'controllerTask@index');
 

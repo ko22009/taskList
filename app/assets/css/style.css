@@ -33,3 +33,13 @@ body {
     border-top-left-radius: 5px !important;
     border-bottom-left-radius: 5px !important;
 }
+
+.ajax-error {
+    padding-left: 10px;
+    color: red;
+}
+
+.right-border {
+    border-top-right-radius: 4px !important;
+    border-bottom-right-radius: 4px !important;
+}

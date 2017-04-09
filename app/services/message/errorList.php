@@ -18,4 +18,5 @@ class errorList {
     const SuccessUpdate = 'Успешно обновлено';
     const EmptyName = 'Пустое поле имя';
     const EmptySurname = 'Пустое поле фамилия';
+    const InvalidTypeFormat = 'Неверный формат файла';
 }
