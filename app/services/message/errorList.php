@@ -19,4 +19,5 @@ class errorList {
     const EmptyName = 'Пустое поле имя';
     const EmptySurname = 'Пустое поле фамилия';
     const InvalidTypeFormat = 'Неверный формат файла';
+    const InvalidCSRF = 'Ошибка в CSRF';
 }

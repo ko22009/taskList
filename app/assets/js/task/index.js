@@ -1,6 +1,5 @@
 var imgVerify = require('./../imgVerify');
-var ajax = require('./ajax');
-
+var ajax = require('./ajax')(window.location.pathname.replace(/^\/|\/$/g, ''));
 var isGood = true;
 var file;
 
@@ -9,6 +8,7 @@ $(function () {
 		$(".ajax-error").hide();
 		$('input:text').val('');
 		isGood = true;
+		file = undefined;
 	});
 	$("#myModal").on("click", ".save", function () {
 		if(isGood) {
@@ -18,9 +18,13 @@ $(function () {
 			fd.append('surname', $('input[name="surname"]').val());
 			fd.append('phone', $('input[name="phone"]').val());
 			fd.append('email', $('input[name="email"]').val());
+			fd.append('csrf_token', $.ajaxSettings.data['csrf_token']);
 			ajax.create(fd, function (data) {
 				if(data != null) {
-					data = JSON.parse(data);
+					try {
+						data = JSON.parse(data);
+					} catch (e) {
+					}
 					if( data.error ) {
 						$(".ajax-error").text(data.error);
 						$(".ajax-error").show();
@@ -45,16 +49,16 @@ $(function () {
 		} else {
 			if( log ) alert(label);
 		}
-
+		isGood = true;
 		$(".ajax-error").hide();
 		$('button.save').prop('disabled', false);
 		if (imgVerify.isSupportedBrowser() && file != undefined) {
-			imgVerify.isGoodImage(400, 400).then(function (goodImg) {
+			imgVerify.isGoodImage(400, 400, file).then(function (goodImg) {
 				if(typeof goodImg === 'object' && goodImg.hasOwnProperty('error')) {
 					isGood = false;
 					$('button.save').prop('disabled', true);
-					//$(".ajax-error").text(goodImg.error);
-					//$(".ajax-error").show();
+					$(".ajax-error").text(goodImg.error);
+					$(".ajax-error").show();
 				}
 			});
 		}

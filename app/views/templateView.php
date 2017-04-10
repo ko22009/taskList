@@ -27,10 +27,9 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="/app/bundles/app.js"></script>
 <script>
-    window.csrf = { csrf_token: '<?php if(isset($_SESSION['csrf_token'])) echo $_SESSION['csrf_token']; ?>' };
     $.ajaxSetup({
-        data: window.csrf
-    });
+        data: { csrf_token: '<?php if(isset($_SESSION['csrf_token'])) echo $_SESSION['csrf_token']; ?>' }
+    })
 </script>
 <?php if(isset($data['js'])) echo $data['js']?>
 </body>

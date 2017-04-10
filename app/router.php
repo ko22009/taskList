@@ -398,7 +398,7 @@ class Router
     public static function csrf_after()
     {
         if (!isset($_REQUEST['csrf_token']) || !isset($_SESSION['csrf_token']) || $_REQUEST['csrf_token'] != $_SESSION['csrf_token']) {
-            exit();
+            echo json_encode(new errorMessage(errorList::InvalidCSRF)), exit;
         }
     }
 

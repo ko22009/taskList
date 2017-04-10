@@ -1,10 +1,10 @@
 var _URL = window.URL || window.webkitURL;
 
-function isSupportedBrowser() {
+var isSupportedBrowser = function () {
 	return window.File && window.FileReader && window.FileList && window.Image;
-}
+};
 
-function isGoodImage(width, height) {
+var isGoodImage = function (width, height, file) {
 	var deferred = jQuery.Deferred();
 	var image = new Image();
 	image.onload = function() {
@@ -24,13 +24,9 @@ function isGoodImage(width, height) {
 	image.onerror = function() {
 		deferred.resolve({error: 'Неверный формат изображения'});
 	};
-	image.src = _URL.createObjectURL(file); // ?
+	image.src = _URL.createObjectURL(file);
 	return deferred.promise();
-}
-
-module.exports = function () {
-	return {
-		isSupportedBrowser: isSupportedBrowser,
-		isGoodImage: isGoodImage
-	}
 };
+
+module.exports.isSupportedBrowser = isSupportedBrowser;
+module.exports.isGoodImage = isGoodImage;

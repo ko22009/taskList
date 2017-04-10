@@ -14,7 +14,6 @@ ListAjax.prototype.create = function (_data, afterdo) {
 		processData: false,
 		contentType: false,
 		data: _data,
-		dataType: 'json',
 		success: function (info) {
 			data = info;
 		},
@@ -33,7 +32,6 @@ ListAjax.prototype.read = function (id, afterdo) {
 		url: '/api/' + this.url + '/read',
 		type: 'POST',
 		data: { id: id },
-		dataType: 'json',
 		success: function (info) {
 			data = info;
 		},
@@ -51,8 +49,9 @@ ListAjax.prototype.update = function (updateData, afterdo) {
 	$.ajax({
 		url: '/api/' + this.url + '/update',
 		type: 'POST',
+		processData: false,
+		contentType: false,
 		data: updateData,
-		dataType: 'json',
 		success: function (info) {
 			data = info;
 			//console.log(data);
@@ -71,7 +70,6 @@ ListAjax.prototype.delete = function (id, afterdo) {
 		url: '/api/' + this.url + '/delete',
 		type: 'POST',
 		data: {id: id},
-		dataType: 'json',
 		success: function (data) {
 			//console.log(data);
 		},

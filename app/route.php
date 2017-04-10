@@ -29,7 +29,7 @@ $router->before('POST', ['/signout', '/signin'], function() {
     Router::csrf_after();
 });
 
-$router->before('POST', ['/api/list/.*'], function() {
+$router->before('POST', '/api/list/.*', function() {
     if(!Router::is_auth())
     {
         header("Location: http://" . $_SERVER['HTTP_HOST']);
@@ -38,7 +38,16 @@ $router->before('POST', ['/api/list/.*'], function() {
     Router::csrf_after();
 });
 
-$router->before('GET', ['/logout', '/list/(\d+)', '/list', '/task'], function() {
+$router->before('GET', '/list/(\d+)', function() {
+    if(!Router::is_auth())
+    {
+        header("Location: http://" . $_SERVER['HTTP_HOST']);
+        exit();
+    }
+    Router::csrf_before();
+});
+
+$router->before('GET', ['/logout', '/list', '/task'], function() {
     if(!Router::is_auth())
     {
         header("Location: http://" . $_SERVER['HTTP_HOST']);
