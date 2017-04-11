@@ -18,6 +18,13 @@ class controllerTask extends Controller
         $this->model->listID = $listID;
         if(!isset($_REQUEST['name']) || empty($_REQUEST['name'])) echo json_encode(new errorMessage(errorList::EmptyName)), exit;
         if(!isset($_REQUEST['surname']) || empty($_REQUEST['surname'])) echo json_encode(new errorMessage(errorList::EmptySurname)), exit;
+        if(!isset($_REQUEST['phone']) || empty($_REQUEST['phone'])) echo json_encode(new errorMessage(errorList::EmptyPhone)), exit;
+        if(!isset($_REQUEST['email']) || empty($_REQUEST['email'])) echo json_encode(new errorMessage(errorList::EmptyEmail)), exit;
+
+        $this->model->name = $_REQUEST['name'];
+        $this->model->surname = $_REQUEST['surname'];
+        $this->model->phone = $_REQUEST['phone'];
+        $this->model->email = $_REQUEST['email'];
 
         $valid_extensions = ['jpeg', 'jpg', 'png', 'gif', 'bmp'];
         $path = $_SERVER['DOCUMENT_ROOT'] . '/app/uploads/';
@@ -34,10 +41,22 @@ class controllerTask extends Controller
             if(in_array($ext, $valid_extensions))
             {
                 $path = $path.strtolower($final_image);
-
                 if(move_uploaded_file($tmp,$path)) {
-                    echo json_encode($final_image);
-                }
+                    if(filesize($path) > 1024 * 1024 * 8 * 2) // в байты 2Мбайт
+                    {
+                        unlink($path);
+                        echo json_encode(new errorMessage(errorList::FileMoreSize)), exit;
+                    }
+                    $this->model->image = $final_image;
+                    $task = $this->model->create();
+                    if(property_exists($task, 'success'))
+                    {
+                        echo json_encode($task), exit;
+                    } else if(property_exists($task, 'error')) {
+                        unlink($path);
+                        echo json_encode($task), exit;
+                    }
+                } else echo json_encode(new errorMessage(errorList::FileNoWrite)), exit;
             }
             else
             {

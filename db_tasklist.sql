@@ -45,7 +45,7 @@ CREATE TABLE `tasks` (
   `surname` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `phone` varchar(18) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `image` varchar(256) COLLATE utf8_unicode_ci NOT NULL
+  `image` varchar(256) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
