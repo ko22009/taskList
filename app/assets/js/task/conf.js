@@ -13,7 +13,8 @@ var conf = {
 		button_delete: "delete"
 	},
 	width: 5500,
-	height: 5500
+	height: 5500,
+	size: 1024 * 1024 * 2 // в байты - 2 Мб
 };
 
 module.exports = conf;

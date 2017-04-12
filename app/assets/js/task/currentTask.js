@@ -32,7 +32,7 @@ var currentTask = {
 		$(".ajax-error").hide();
 		$('button.save').prop('disabled', false);
 		if (imgVerify.isSupportedBrowser() && currentTask.file != undefined) {
-			imgVerify.isGoodImage(conf.width, conf.height, currentTask.file).then(function (goodImg) {
+			imgVerify.isGoodImage(conf.width, conf.height, conf.size, currentTask.file).then(function (goodImg) {
 				if(typeof goodImg === 'object' && goodImg.hasOwnProperty('error')) {
 					currentTask.isGood = false;
 					$('button.save').prop('disabled', true);
