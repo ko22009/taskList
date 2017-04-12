@@ -1,4 +1,9 @@
 var currentTask = require('./currentTask');
+var conf = require('./conf');
+
+var listItems = "#" + conf.listItems;
+var listItem = conf.listItem;
+var button_delete = "." + conf.editForm.button_delete;
 
 $(function () {
 
@@ -17,6 +22,11 @@ $(function () {
 	// обновление файла, после кнопки обзор
 	$(document).on('change', ':file', function() {
 		currentTask.updateFile(this);
+	});
+
+	$(listItems).on("click", button_delete, function () {
+		currentTask.id = $(this).closest(listItem).attr("id");
+		currentTask.remove($(this));
 	});
 
 });

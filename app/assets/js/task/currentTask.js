@@ -68,8 +68,11 @@ var currentTask = {
 		});
 	},
 	remove: function (elem) {
-		listAjax.delete(currentTask.id, function () {
-			elem.closest(conf.listItem).remove();
+		listAjax.delete(currentTask.id, function (data) {
+			try {
+				data = JSON.parse(data);
+			} catch(e) {}
+			if(data != null && !data.error) elem.closest(conf.listItem).remove();
 		});
 	},
 	create: function () {

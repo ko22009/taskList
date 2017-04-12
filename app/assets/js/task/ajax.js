@@ -54,7 +54,6 @@ ListAjax.prototype.update = function (updateData, afterdo) {
 		data: updateData,
 		success: function (info) {
 			data = info;
-			//console.log(data);
 		},
 		error: function (request, message, error) {
 			console.log(request, message, error);
@@ -66,18 +65,20 @@ ListAjax.prototype.update = function (updateData, afterdo) {
 };
 
 ListAjax.prototype.delete = function (id, afterdo) {
+	var data = null;
 	$.ajax({
 		url: '/api/' + this.url + '/delete',
 		type: 'POST',
 		data: {id: id},
-		success: function (data) {
-			//console.log(data);
+		success: function (info) {
+			data = info;
 		},
 		error: function (request, message, error) {
 			console.log(request, message, error);
+			data = null;
 		}
 	}).done(function () {
-		afterdo();
+		afterdo(data);
 	});
 };
 

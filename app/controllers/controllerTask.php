@@ -7,20 +7,6 @@ class controllerTask extends Controller
         $this->model = new modelTask();
         parent::__construct();
     }
-    private function existList($listID)
-    {
-        $result = $this->model->existList($listID);
-        if(property_exists($result, 'error')) {
-            echo json_encode($result), exit;
-        }
-    }
-    private function haveList($listID)
-    {
-        $result = $this->model->haveList($listID);
-        if(property_exists($result, 'error')) {
-            echo json_encode($result), exit;
-        }
-    }
     function index($num)
     {
         $this->model->id_user = $_SESSION['user_id'];
@@ -39,7 +25,10 @@ class controllerTask extends Controller
     {
         $this->model->id_user = $_SESSION['user_id'];
         $this->model->listID = $listID;
-        $this->existList($listID);
+        $result = $this->model->existList($listID);
+        if(property_exists($result, 'error')) {
+            echo json_encode($result), exit;
+        }
         if(!isset($_REQUEST['name']) || empty($_REQUEST['name'])) echo json_encode(new errorMessage(errorList::EmptyName)), exit;
         if(!isset($_REQUEST['surname']) || empty($_REQUEST['surname'])) echo json_encode(new errorMessage(errorList::EmptySurname)), exit;
         if(!isset($_REQUEST['phone']) || empty($_REQUEST['phone'])) echo json_encode(new errorMessage(errorList::EmptyPhone)), exit;
@@ -92,7 +81,10 @@ class controllerTask extends Controller
     {
         $this->model->id_user = $_SESSION['user_id'];
         $this->model->listID = $listID;
-        $this->haveList($listID);
+        $result = $this->model->haveList($listID);
+        if(property_exists($result, 'error')) {
+            echo json_encode($result), exit;
+        }
         if(!isset($_REQUEST['id']) || $_REQUEST['id'] == "undefined")
         {
             echo $this->model->readAll();
@@ -105,12 +97,26 @@ class controllerTask extends Controller
     {
         $this->model->id_user = $_SESSION['user_id'];
         $this->model->listID = $listID;
-        $this->haveList($listID);
+        $result = $this->model->haveList($listID);
+        if(property_exists($result, 'error')) {
+            echo json_encode($result), exit;
+        }
     }
     function api_delete($listID)
     {
         $this->model->id_user = $_SESSION['user_id'];
         $this->model->listID = $listID;
-        $this->haveList($listID);
+        $result = $this->model->haveList($listID);
+        if(property_exists($result, 'error')) {
+            echo json_encode($result), exit;
+        }
+        if(!isset($_REQUEST['id']) || empty($_REQUEST['id'])) echo json_encode(new errorMessage(errorList::EmptyId)), exit;
+        $this->model->id = $_REQUEST['id'];
+        $result = $this->model->taskHaveThisList();
+        if(property_exists($result, 'error')) {
+            echo json_encode($result), exit;
+        }
+        $result = $this->model->delete();
+        echo json_encode($result), exit;
     }
 }

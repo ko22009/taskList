@@ -6,6 +6,7 @@ class errorList {
     const IncorrectQuery = 'Проблема в выполнении запроса';
     const OccupiedLoginOrEmail = 'Логин или email занят!';
     const SuccessRegistration = 'Успешная регистрация';
+    const EmptyId = 'Пустое поле id';
     const EmptyName = 'Пустое поле имя';
     const EmptySurname = 'Пустое поле фамилия';
     const EmptyLogin = 'Пустое поле логин';
@@ -27,4 +28,6 @@ class errorList {
     const NotFoundResult = 'Не существует записей';
     const ListNotYourOrNotExist = 'Список принадлежит не вам, либо такого нет';
     const ListNotYour = 'Список принадлежит не вам, либо такого нет';
+    const TaskNotFound = 'Нет такой записи';
+    const TaskFound = 'Запись найдена';
 }

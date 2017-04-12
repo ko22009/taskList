@@ -23,6 +23,20 @@ class modelTask extends Model
         }
         return new successMessage(errorList::ListNotYour);
     }
+    function taskHaveThisList()
+    {
+        $query = "SELECT * FROM tasks WHERE id=:id and id_list=:id_list";
+        $stmt = $this->connection->prepare($query);
+        if (!$stmt->execute([':id' => $this->id, ':id_list' => $this->listID])) {
+            return json_encode(new errorMessage($stmt->errorInfo()));
+        }
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if(count($rows) > 0)
+            return new successMessage(errorList::TaskFound);
+
+        return new errorMessage(errorList::TaskNotFound);
+    }
     function haveList($num)
     {
         $query = "SELECT * FROM lists WHERE id=:id and id_user=:id_user";
@@ -74,5 +88,13 @@ class modelTask extends Model
             } else $list = [];
         } else $list = [];
         return json_encode($list);
+    }
+    function delete()
+    {
+        $query = "DELETE FROM tasks WHERE id=:id";
+        $stmt = $this->connection->prepare($query);
+        if ($stmt->execute([':id' => $this->id])) {
+            return json_encode(new successMessage(errorList::SuccessRemove));
+        } else return json_encode(new errorMessage($stmt->errorInfo()));
     }
 }
