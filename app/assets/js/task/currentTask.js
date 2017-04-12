@@ -32,7 +32,7 @@ var currentTask = {
 		$(".ajax-error").hide();
 		$('button.save').prop('disabled', false);
 		if (imgVerify.isSupportedBrowser() && currentTask.file != undefined) {
-			imgVerify.isGoodImage(400, 400, currentTask.file).then(function (goodImg) {
+			imgVerify.isGoodImage(conf.width, conf.height, currentTask.file).then(function (goodImg) {
 				if(typeof goodImg === 'object' && goodImg.hasOwnProperty('error')) {
 					currentTask.isGood = false;
 					$('button.save').prop('disabled', true);
@@ -54,8 +54,16 @@ var currentTask = {
 	readAll: function () {
 		currentTask.clear();
 		listAjax.read(undefined, function (data) {
+			data = JSON.parse(data);
+			if( !data.error )
 			$.each(data, function (index, info) {
-				currentTask.createForm(info);
+				currentTask.id = info['id'];
+				currentTask.name = info['name'];
+				currentTask.surname = info['surname'];
+				currentTask.phone = info['phone'];
+				currentTask.email = info['email'];
+				currentTask.image = info['image'];
+				currentTask.createForm();
 			});
 		});
 	},

@@ -2,6 +2,8 @@ var currentTask = require('./currentTask');
 
 $(function () {
 
+	currentTask.readAll();
+
 	// отмена - закрытие окна
 	$('#myModal').on('hidden.bs.modal', function () {
 		currentTask.empty();

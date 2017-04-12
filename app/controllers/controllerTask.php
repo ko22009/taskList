@@ -7,15 +7,39 @@ class controllerTask extends Controller
         $this->model = new modelTask();
         parent::__construct();
     }
-    function index()
+    private function existList($listID)
     {
-        $data['title'] = 'Контакты';
-        $this->view->generate('task/index.php', 'templateView.php', $data);
+        $result = $this->model->existList($listID);
+        if(property_exists($result, 'error')) {
+            echo json_encode($result), exit;
+        }
+    }
+    private function haveList($listID)
+    {
+        $result = $this->model->haveList($listID);
+        if(property_exists($result, 'error')) {
+            echo json_encode($result), exit;
+        }
+    }
+    function index($num)
+    {
+        $this->model->id_user = $_SESSION['user_id'];
+        $result = $this->model->haveList($num);
+        if(property_exists($result, 'success'))
+        {
+            $data['title'] = 'Контакты';
+            $this->view->generate('task/index.php', 'templateView.php', $data);
+        } else if(property_exists($result, 'error')) {
+            header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
+            $controller = new controller404();
+            $controller->index();
+        }
     }
     function api_create($listID)
     {
         $this->model->id_user = $_SESSION['user_id'];
         $this->model->listID = $listID;
+        $this->existList($listID);
         if(!isset($_REQUEST['name']) || empty($_REQUEST['name'])) echo json_encode(new errorMessage(errorList::EmptyName)), exit;
         if(!isset($_REQUEST['surname']) || empty($_REQUEST['surname'])) echo json_encode(new errorMessage(errorList::EmptySurname)), exit;
         if(!isset($_REQUEST['phone']) || empty($_REQUEST['phone'])) echo json_encode(new errorMessage(errorList::EmptyPhone)), exit;
@@ -42,7 +66,7 @@ class controllerTask extends Controller
             {
                 $path = $path.strtolower($final_image);
                 if(move_uploaded_file($tmp,$path)) {
-                    if(filesize($path) > 1024 * 1024 * 8 * 2) // в байты 2Мбайт
+                    if(filesize($path) > 1024 * 1024 * 2) // filesize возвращает в байтах
                     {
                         unlink($path);
                         echo json_encode(new errorMessage(errorList::FileMoreSize)), exit;
@@ -56,7 +80,7 @@ class controllerTask extends Controller
                         unlink($path);
                         echo json_encode($task), exit;
                     }
-                } else echo json_encode(new errorMessage(errorList::FileNoWrite)), exit;
+                } else echo json_encode(new errorMessage(errorList::FileNoWrite)), exit; // заходит также, если объем файла большой и на сервере upload_max_filesize
             }
             else
             {
@@ -68,22 +92,25 @@ class controllerTask extends Controller
     {
         $this->model->id_user = $_SESSION['user_id'];
         $this->model->listID = $listID;
+        $this->haveList($listID);
         if(!isset($_REQUEST['id']) || $_REQUEST['id'] == "undefined")
         {
             echo $this->model->readAll();
         } else
         {
-            echo $this->model->read($_REQUEST['id']);
+            echo $this->model->read();
         }
     }
     function api_update($listID)
     {
         $this->model->id_user = $_SESSION['user_id'];
         $this->model->listID = $listID;
+        $this->haveList($listID);
     }
     function api_delete($listID)
     {
         $this->model->id_user = $_SESSION['user_id'];
         $this->model->listID = $listID;
+        $this->haveList($listID);
     }
 }

@@ -14,6 +14,30 @@ class modelTask extends Model
     {
         parent::__construct();
     }
+    function existList($num)
+    {
+        $query = "SELECT * FROM lists WHERE id=:id AND id_user=:id_user";
+        $stmt = $this->connection->prepare($query);
+        if (!$stmt->execute([':id' => $num, ':id_user' => $this->id_user])) {
+            return new errorMessage($stmt->errorInfo());
+        }
+        return new successMessage(errorList::ListNotYour);
+    }
+    function haveList($num)
+    {
+        $query = "SELECT * FROM lists WHERE id=:id and id_user=:id_user";
+        $stmt = $this->connection->prepare($query);
+        if(!$stmt->execute([':id' => $num, ':id_user' => $this->id_user]))
+        {
+            return new errorMessage($stmt->errorInfo());
+        }
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if(count($rows) > 0)
+            return new successMessage(errorList::FoundResult);
+
+        return new errorMessage(errorList::NotFoundResult);
+    }
     function create()
     {
         $query = "INSERT INTO tasks SET id_list=:id_list, name=:name, surname=:surname, phone=:phone, email=:email, image=:image";
@@ -24,5 +48,31 @@ class modelTask extends Model
         } else {
             return new errorMessage($stmt->errorInfo());
         }
+    }
+    function read()
+    {
+        $query = "SELECT * FROM tasks WHERE id_list=:id_list and id=:id";
+        $stmt = $this->connection->prepare($query);
+        if ($stmt->execute([':id_list' => $this->listID, ':id' => $this->id])) {
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if (count($rows) > 0)
+            {
+                $list = $rows;
+            } else $list = [];
+        } else $list = [];
+        return json_encode($list);
+    }
+    function readAll()
+    {
+        $query = "SELECT * FROM tasks WHERE id_list=:id_list";
+        $stmt = $this->connection->prepare($query);
+        if ($stmt->execute([':id_list' => $this->listID])) {
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if (count($rows) > 0)
+            {
+                $list = $rows;
+            } else $list = [];
+        } else $list = [];
+        return json_encode($list);
     }
 }

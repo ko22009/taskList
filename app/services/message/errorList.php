@@ -23,4 +23,8 @@ class errorList {
     const InvalidCSRF = 'Ошибка в CSRF';
     const FileNoWrite = 'Нет возможности закачать файл на сервер';
     const FileMoreSize = 'Большой объем файла';
+    const FoundResult = 'Существуют записи';
+    const NotFoundResult = 'Не существует записей';
+    const ListNotYourOrNotExist = 'Список принадлежит не вам, либо такого нет';
+    const ListNotYour = 'Список принадлежит не вам, либо такого нет';
 }

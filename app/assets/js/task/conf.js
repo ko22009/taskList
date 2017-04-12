@@ -11,7 +11,9 @@ var conf = {
 		button_cancel: "cancel",
 		button_save: "save",
 		button_delete: "delete"
-	}
+	},
+	width: 5500,
+	height: 5500
 };
 
 module.exports = conf;
