@@ -2,11 +2,13 @@ var sortingTable = require('./../sortingTable');
 sortingTable = sortingTable('#target', '.sort');
 var currentTask = require('./currentTask')(sortingTable);
 var conf = require('./conf');
+var Digits = require('./../Digits');
 
 var listItems = "#" + conf.listItems;
 var listItem = conf.listItem;
 var button_delete = "." + conf.editForm.button_delete;
 var button_edit = "." + conf.editForm.button_edit;
+var prev = {id:'', val: ''};
 
 $(function () {
 
@@ -41,6 +43,21 @@ $(function () {
 		$('#myModalLabel').text('Обновление записи');
 		$('#myModal .save').text('Обновить');
 		currentTask.update(this);
+	});
+
+	$('#target').on('click', 'tr td', function() {
+		if($(this).index() == 2) {
+			if (prev.id) $('#' + prev.id).find('td').eq(2).text(prev.val);
+			if (prev.id != $(this).closest('tr').attr('id')) {
+				prev.id = $(this).closest('tr').attr('id');
+				prev.val = $(this).text();
+				$(this).text(Digits(prev.val));
+			} else {
+				if (prev.id) $('#' + prev.id).find('td').eq(2).text(prev.val);
+				prev.id = '';
+				prev.val = '';
+			}
+		}
 	});
 
 });

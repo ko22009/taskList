@@ -1,4 +1,5 @@
 module.exports = function (num) {
+	if(isNaN(num)) return 'Не число!';
 	if (num > 999999999999) return 'Слишком большое число';
 	else return Convert(num);
 };
