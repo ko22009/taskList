@@ -50,9 +50,11 @@ var currentList = {
 		$(this.listItems).append(
 			"<tr id='" + id + "'>"
 			+ "<td>"
+			+ "<a href='list/" + id + "'>"
 			+ "<span class='" + conf.listText + " left'>"
 			+ name
 			+ "</span>"
+			+ "</a>"
 			+ twoButtons
 			+ "</td>"
 			+ "</tr>"

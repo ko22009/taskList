@@ -15,6 +15,7 @@ var currentTask = {
 	itemBox: "." + conf.itemBox,
 	isGood: true,
 	file: undefined,
+	isCreate: true,
 	updateFile: function (self) {
 		var input = $(self);
 		var	label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
@@ -54,7 +55,10 @@ var currentTask = {
 	readAll: function () {
 		currentTask.clear();
 		listAjax.read(undefined, function (data) {
-			data = JSON.parse(data);
+			console.log(data);
+			try {
+				data = JSON.parse(data);
+			} catch (e){}
 			if( !data.error )
 			$.each(data, function (index, info) {
 				currentTask.id = info['id'];
@@ -72,10 +76,11 @@ var currentTask = {
 			try {
 				data = JSON.parse(data);
 			} catch(e) {}
-			if(data != null && !data.error) elem.closest(conf.listItem).remove();
+			if(data != null && !data.error) $(elem).closest(conf.listItem).remove();
 		});
 	},
 	create: function () {
+		currentTask.isCreate = true;
 		if(currentTask.isGood) {
 			var fd = new FormData;
 			currentTask.name = $('input[name="name"]').val();
@@ -150,61 +155,99 @@ var currentTask = {
 		// очистка поля ввода
 		currentTask.empty();
 	},
-	editForm: function (elem) {
-		var editItemBox =
-			"<form class='edit_input_box col-lg-6' style='padding: 0'>" +
-			"<div class='input-group'>" +
-			"<input type='text' class='" + conf.itemBox + " form-control' style='height: auto' placeholder='" + currentTask.name + "' >" +
-			"<span class='input-group-btn'>" +
-			"<input class='btn btn-default cancel' type='submit' value='Отменить'>" +
-			"<input class='btn btn-default save' type='submit' value='Сохранить'>" +
-			"</span>" +
-			"</div>" +
-			"</form>";
-		// вставляем форму редактирования вместо записи
-		elem.closest(currentList.listItem).find('td').html(editItemBox);
-	},
-	save: function (elem) {
-		var id = currentList.id;
-		var name = $(currentList.itemBox).val();
-		listAjax.update({id: id, name: name}, function (data) {
-			if(data != null)
+	update: function (self) {
+		currentTask.isCreate = false;
+		currentTask.id = $(self).closest('tr').attr('id');
+		$('#myModal').modal('show');
+		var elems = $(self).closest('tr').find('td');
+		elems.each(function (index) {
+			switch(index)
 			{
-				if(data.hasOwnProperty('success'))
-				{
-					currentList.saveForm(elem, name);
-					$('#filter input').keyup(); // after edit update filter
-					sortingTable.compare(); // after edit update sort
-				} else if(data.hasOwnProperty('error')) console.log(data['error']);
+				case 0: currentTask.name = $(elems[0]).text();
+				case 1: currentTask.surname = $(elems[1]).text();
+				case 2: currentTask.phone = $(elems[2]).text();
+				case 3: currentTask.email = $(elems[3]).text();
+				case 4: {
+					var text = $(elems[4]).find('img').attr('src');
+					currentTask.file = text.match('(?!.*\/).*')[0];
+					currentTask.image = text.match('(?!.*\/).*')[0];
+				}
+			}
+		});
+		$('input[name="name"]').val(currentTask.name);
+		$('input[name="surname"]').val(currentTask.surname);
+		$('input[name="phone"]').val(currentTask.phone);
+		$('input[name="email"]').val(currentTask.email);
+		$('input[name="file"]').val(currentTask.file);
+	},
+	updateData: function () {
+		var fd = new FormData;
+		currentTask.name = $('input[name="name"]').val();
+		currentTask.surname = $('input[name="surname"]').val();
+		currentTask.phone = $('input[name="phone"]').val();
+		currentTask.email = $('input[name="email"]').val();
+		fd.append('id', currentTask.id);
+		fd.append('image', currentTask.file);
+		fd.append('name', currentTask.name);
+		fd.append('surname', currentTask.surname);
+		fd.append('phone', currentTask.phone);
+		fd.append('email', currentTask.email);
+		fd.append('csrf_token', $.ajaxSettings.data['csrf_token']);
+		listAjax.update(fd, function (data) {
+			if(data != null) {
+				try {
+					data = JSON.parse(data);
+					if( data.error ) {
+						console.log(data['error']);
+					} else {
+						console.log(data['image']);
+						currentTask.image = data['image'];
+						currentTask.updateRowData();
+					}
+				} catch (e) {
+				}
 			}
 		});
 	},
-	saveForm: function (elem, name) {
-		// кнопки
-		var deleteButton = "<button class='delete btn btn-warning'>Удалить</button>";
-		var editButton = "<button class='edit btn btn-success'>Редактировать</button>";
-		var twoButtons = "<div class='btn-group pull-right'>" + deleteButton + editButton + "</div>";
-		elem.closest(currentList.listItem).html(
-			"<td>" +
-			"<span class='" + conf.listText + "'>" +
-			name +
-			"</span>" +
-			twoButtons +
-			"</td>"
+	updateRowData: function () {
+		var deleteButton = "<span class='glyphicon glyphicon-trash delete' aria-hidden='true'></span>";
+		var editButton = "<span class='glyphicon glyphicon-pencil edit' aria-hidden='true'></span>";
+		var twoButtons = deleteButton + editButton;
+		$('#' + currentTask.id).html(
+			"<td>"
+			+ "<span class='" + conf.listText + " left'>"
+			+ currentTask.name
+			+ "</span>"
+			+ "</td>"
+			+ "<td>"
+			+ "<span class='" + conf.listText + " left'>"
+			+ currentTask.surname
+			+ "</span>"
+			+ "</td>"
+			+ "<td>"
+			+ "<span class='" + conf.listText + " left'>"
+			+ currentTask.phone
+			+ "</span>"
+			+ "</td>"
+			+ "<td>"
+			+ "<span class='" + conf.listText + " left'>"
+			+ currentTask.email
+			+ "</span>"
+			+ "</td>"
+			+ "<td>"
+			+ "<span class='" + conf.listText + " left'>"
+			+ "<img />"
+			+ "</span>"
+			+ "</td>"
+			+ "<td>"
+			+ twoButtons
+			+ "</td>"
 		);
-	},
-	cancel: function (elem) {
-		var deleteButton = "<button class='delete btn btn-warning'>Удалить</button>";
-		var editButton = "<button class='edit btn btn-success'>Редактировать</button>";
-		var twoButtons = "<div class='btn-group pull-right'>" + deleteButton + editButton + "</div>";
-		elem.closest(currentList.listItem).html(
-			"<td>" +
-			"<span class='" + conf.listText + "'>" +
-			currentList.name +
-			"</span>"+
-			twoButtons +
-			"</td>"
-		);
+		console.log(currentTask.image);
+		if(currentTask.image != undefined)	document.getElementById(currentTask.id).getElementsByTagName('img')[0].src = '/app/uploads/' + currentTask.image;
+		// очистка поля ввода
+		currentTask.empty();
+		$("#myModal").modal("hide");
 	}
 };
 

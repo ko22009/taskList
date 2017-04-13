@@ -4,6 +4,7 @@ var conf = require('./conf');
 var listItems = "#" + conf.listItems;
 var listItem = conf.listItem;
 var button_delete = "." + conf.editForm.button_delete;
+var button_edit = "." + conf.editForm.button_edit;
 
 $(function () {
 
@@ -14,9 +15,10 @@ $(function () {
 		currentTask.empty();
 	});
 
-	// создание / обновление?
+	// создание / обновление
 	$("#myModal").on("click", ".save", function () {
-		currentTask.create();
+		if(currentTask.isCreate) currentTask.create();
+		else currentTask.updateData();
 	});
 
 	// обновление файла, после кнопки обзор
@@ -24,9 +26,19 @@ $(function () {
 		currentTask.updateFile(this);
 	});
 
+	$('button[data-target="#myModal"]').click(function(){
+		$('#myModalLabel').text('Создание новой записи');
+	});
+
 	$(listItems).on("click", button_delete, function () {
 		currentTask.id = $(this).closest(listItem).attr("id");
-		currentTask.remove($(this));
+		currentTask.remove(this);
+	});
+
+	$(listItems).on("click", button_edit, function () {
+		$('#myModalLabel').text('Обновление записи');
+		$('#myModal .save').text('Обновить');
+		currentTask.update(this);
 	});
 
 });

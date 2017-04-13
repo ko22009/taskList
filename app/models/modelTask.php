@@ -89,6 +89,16 @@ class modelTask extends Model
         } else $list = [];
         return json_encode($list);
     }
+    function update()
+    {
+        $query = "UPDATE tasks SET name=:name, surname=:surname, phone=:phone, email=:email, image=:image WHERE id = :id";
+        $stmt = $this->connection->prepare($query);
+        if ($stmt->execute([':id' => $this->id, ':name' => $this->name, ':surname' => $this->surname, ':phone' => $this->phone, ':email' => $this->email, ':image' => $this->image])) {
+            return (object) array_merge((array)new successMessage(errorList::SuccessUpdate), ['image' => $this->image]);
+        } else {
+            return new errorMessage($stmt->errorInfo());
+        }
+    }
     function delete()
     {
         $query = "DELETE FROM tasks WHERE id=:id";
@@ -96,5 +106,20 @@ class modelTask extends Model
         if ($stmt->execute([':id' => $this->id])) {
             return json_encode(new successMessage(errorList::SuccessRemove));
         } else return json_encode(new errorMessage($stmt->errorInfo()));
+    }
+    function removePrevImage()
+    {
+        $query = "SELECT image FROM tasks WHERE id=:id and image != ''";
+        $stmt = $this->connection->prepare($query);
+        if ($stmt->execute([':id' => $this->id])) {
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if (count($rows) > 0)
+            {
+                $file = $_SERVER['DOCUMENT_ROOT'] . '/app/uploads/' . $rows[0]['image'];
+                if(file_exists($file)) unlink($file);
+            }
+        } else {
+            return new errorMessage($stmt->errorInfo());
+        }
     }
 }

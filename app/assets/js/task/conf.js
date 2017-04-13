@@ -12,8 +12,8 @@ var conf = {
 		button_save: "save",
 		button_delete: "delete"
 	},
-	width: 5500,
-	height: 5500,
+	width: 400,
+	height: 400,
 	size: 1024 * 1024 * 2 // в байты - 2 Мб
 };
 
