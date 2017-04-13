@@ -150,7 +150,7 @@ class controllerTask extends Controller
                     echo json_encode(new errorMessage(errorList::InvalidTypeFormat)), exit;
                 }
             } else {
-                $this->model->image = $_REQUEST['image'];
+                $this->model->image = $_REQUEST['image']=='undefined'?'':$_REQUEST['image'];
                 $result = $this->model->update();
                 if (property_exists($result, 'success')) {
                     echo json_encode($result), exit;
