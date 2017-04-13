@@ -39,6 +39,7 @@ class controllerTask extends Controller
         $this->model->surname = $_REQUEST['surname'];
         $this->model->phone = $_REQUEST['phone'];
         $this->model->email = $_REQUEST['email'];
+        $this->model->image = '';
 
         $valid_extensions = ['jpeg', 'jpg', 'png', 'gif', 'bmp'];
         $path = $_SERVER['DOCUMENT_ROOT'] . '/app/uploads/';
@@ -60,17 +61,17 @@ class controllerTask extends Controller
                         echo json_encode(new errorMessage(errorList::FileMoreSize)), exit;
                     }
                     $this->model->image = $final_image;
-                    $task = $this->model->create();
-                    if (property_exists($task, 'success')) {
-                        echo json_encode($task), exit;
-                    } else if (property_exists($task, 'error')) {
-                        unlink($path);
-                        echo json_encode($task), exit;
-                    }
                 } else echo json_encode(new errorMessage(errorList::FileNoWrite)), exit; // заходит также, если объем файла большой и на сервере upload_max_filesize
             } else {
                 echo json_encode(new errorMessage(errorList::InvalidTypeFormat)), exit;
             }
+        }
+        $task = $this->model->create();
+        if (property_exists($task, 'success')) {
+            echo json_encode($task), exit;
+        } else if (property_exists($task, 'error')) {
+            if(file_exists($path)) unlink($path);
+            echo json_encode($task), exit;
         }
     }
 
@@ -108,6 +109,7 @@ class controllerTask extends Controller
         $this->model->surname = $_REQUEST['surname'];
         $this->model->phone = $_REQUEST['phone'];
         $this->model->email = $_REQUEST['email'];
+        $this->model->image = '';
 
         $result = $this->model->taskHaveThisList();
         if (property_exists($result, 'error')) {
@@ -174,6 +176,7 @@ class controllerTask extends Controller
         if (property_exists($result, 'error')) {
             echo json_encode($result), exit;
         }
+        $this->model->removePrevImage();
         $result = $this->model->delete();
         echo json_encode($result), exit;
     }

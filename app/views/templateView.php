@@ -5,6 +5,7 @@
     <meta name="keywords" content=""/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title><?php echo 'Task list'; if(isset($data['title'])) echo ' | ' . $data['title'];?></title>
     <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css"/>
     <link href="http://fonts.googleapis.com/css?family=Kreon" rel="stylesheet" type="text/css"/>

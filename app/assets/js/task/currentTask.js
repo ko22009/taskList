@@ -1,6 +1,7 @@
 var listAjax = require('./ajax')(window.location.pathname.replace(/^\/|\/$/g, ''));
 var imgVerify = require('./../imgVerify');
 var conf = require('./conf');
+var sortingTable;
 
 var currentTask = {
 	id: '',
@@ -20,8 +21,6 @@ var currentTask = {
 		var input = $(self);
 		var	label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
 		currentTask.file = self.files[0];
-		//console.log(file); // size, type
-		//label
 		input = $(self).parents('.input-group').find(':text');
 		if( input.length ) {
 			input.val(label);
@@ -55,7 +54,6 @@ var currentTask = {
 	readAll: function () {
 		currentTask.clear();
 		listAjax.read(undefined, function (data) {
-			console.log(data);
 			try {
 				data = JSON.parse(data);
 			} catch (e){}
@@ -69,6 +67,7 @@ var currentTask = {
 				currentTask.image = info['image'];
 				currentTask.createForm();
 			});
+			sortingTable.init();
 		});
 	},
 	remove: function (elem) {
@@ -108,6 +107,7 @@ var currentTask = {
 						currentTask.createForm();
 						$("#myModal").modal("hide");
 						$("input:text").val('');
+						sortingTable.compare(); // after add update sort
 					}
 				}
 			});
@@ -151,7 +151,8 @@ var currentTask = {
 			+ "</td>"
 			+ "</tr>"
 		);
-		if(currentTask.image != undefined)	document.getElementById(currentTask.id).getElementsByTagName('img')[0].src = '/app/uploads/' + currentTask.image;
+
+		if(currentTask.image)	document.getElementById(currentTask.id).getElementsByTagName('img')[0].src = '/app/uploads/' + currentTask.image;
 		// очистка поля ввода
 		currentTask.empty();
 	},
@@ -169,8 +170,10 @@ var currentTask = {
 				case 3: currentTask.email = $(elems[3]).text();
 				case 4: {
 					var text = $(elems[4]).find('img').attr('src');
-					currentTask.file = text.match('(?!.*\/).*')[0];
-					currentTask.image = text.match('(?!.*\/).*')[0];
+					if(text){
+						currentTask.file = text.match('(?!.*\/).*')[0];
+						currentTask.image = text.match('(?!.*\/).*')[0];
+					}
 				}
 			}
 		});
@@ -200,7 +203,6 @@ var currentTask = {
 					if( data.error ) {
 						console.log(data['error']);
 					} else {
-						console.log(data['image']);
 						currentTask.image = data['image'];
 						currentTask.updateRowData();
 					}
@@ -243,12 +245,15 @@ var currentTask = {
 			+ twoButtons
 			+ "</td>"
 		);
-		console.log(currentTask.image);
-		if(currentTask.image != undefined)	document.getElementById(currentTask.id).getElementsByTagName('img')[0].src = '/app/uploads/' + currentTask.image;
+		if(currentTask.image)	document.getElementById(currentTask.id).getElementsByTagName('img')[0].src = '/app/uploads/' + currentTask.image;
 		// очистка поля ввода
 		currentTask.empty();
 		$("#myModal").modal("hide");
+		sortingTable.compare(); // after edit update sort
 	}
 };
 
-module.exports = currentTask;
+module.exports = function (sorting) {
+	sortingTable = sorting;
+	return currentTask;
+};;

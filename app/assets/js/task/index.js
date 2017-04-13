@@ -1,4 +1,6 @@
-var currentTask = require('./currentTask');
+var sortingTable = require('./../sortingTable');
+sortingTable = sortingTable('#target', '.sort');
+var currentTask = require('./currentTask')(sortingTable);
 var conf = require('./conf');
 
 var listItems = "#" + conf.listItems;
