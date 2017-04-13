@@ -1,5 +1,6 @@
 var listAjax = require('./ajax')(window.location.pathname.replace(/^\/|\/$/g, ''));
 var imgVerify = require('./../imgVerify');
+var filterTable = require('./../filterTable');
 var conf = require('./conf');
 var sortingTable;
 
@@ -68,6 +69,7 @@ var currentTask = {
 				currentTask.createForm();
 			});
 			sortingTable.init();
+			filterTable('#target', $('#filter input.string'));
 		});
 	},
 	remove: function (elem) {
@@ -108,6 +110,7 @@ var currentTask = {
 						$("#myModal").modal("hide");
 						$("input:text").val('');
 						sortingTable.compare(); // after add update sort
+						$('#filter input').keyup(); // after add update filter
 					}
 				}
 			});
@@ -250,6 +253,7 @@ var currentTask = {
 		currentTask.empty();
 		$("#myModal").modal("hide");
 		sortingTable.compare(); // after edit update sort
+		$('#filter input').keyup(); // after edit update filter
 	}
 };
 
