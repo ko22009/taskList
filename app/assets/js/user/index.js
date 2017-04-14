@@ -1,11 +1,11 @@
 $(function () {
 
 	$('#login').submit(function () {
-		var data = null;
+		var data = $(this).serialize();
 		$.ajax({
 			url: '/api/user/signin',
 			type: 'POST',
-			data: $(this).serialize(),
+			data: data,
 			dataType: 'json',
 			success: function (info) {
 				data = info;
@@ -27,11 +27,12 @@ $(function () {
 	});
 
 	$('#register').submit(function () {
-		var data = null;
+		var data = $(this).serialize();
+
 		$.ajax({
 			url: '/api/user/signout',
 			type: 'POST',
-			data: $(this).serialize(),
+			data: data,
 			dataType: 'json',
 			success: function (info) {
 				data = info;

@@ -46,19 +46,19 @@
             <div class="modal-body">
                 <div class="input-group">
                     <span class="input-group-addon">Имя</span>
-                    <input type="text" class="string form-control form-task" name="name">
+                    <input type="text" class="string form-control form-task" name="name" required>
                 </div>
                 <div class="input-group">
                     <span class="input-group-addon">Фамилия</span>
-                    <input type="text" class="string form-control form-task" name="surname">
+                    <input type="text" class="string form-control form-task" name="surname" required>
                 </div>
                 <div class="input-group">
                     <span class="input-group-addon">Телефон</span>
-                    <input type="text" class="string form-control form-task" name="phone">
+                    <input type="number" class="string form-control form-task" name="phone" required>
                 </div>
                 <div class="input-group">
                     <span class="input-group-addon">email</span>
-                    <input type="text" class="string form-control form-task" name="email">
+                    <input type="email" class="string form-control form-task" name="email" required>
                 </div>
                 <div class="input-group">
                     <label class="input-group-btn">

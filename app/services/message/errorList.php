@@ -32,4 +32,7 @@ class errorList {
     const TaskFound = 'Запись найдена';
     const CaptchaEmpty = 'Поле captcha пусто';
     const CaptchaError = 'Поле captcha введено неверно';
+    const IncorrectPhoneNumber = 'Поле номера телефона указано неверно';
+    const IncorrectName = 'Поле имени указано неверно';
+    const IncorrectSurname = 'Поле фамилии указано неверно';
 }

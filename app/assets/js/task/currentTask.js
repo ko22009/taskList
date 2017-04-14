@@ -204,8 +204,10 @@ var currentTask = {
 				try {
 					data = JSON.parse(data);
 					if( data.error ) {
-						console.log(data['error']);
+						$(".ajax-error").text(data.error);
+						$(".ajax-error").show();
 					} else {
+						$(".ajax-error").hide();
 						currentTask.image = data['image'];
 						currentTask.updateRowData();
 					}

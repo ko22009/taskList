@@ -41,6 +41,22 @@ class controllerTask extends Controller
         $this->model->email = $_REQUEST['email'];
         $this->model->image = '';
 
+        if (!ctype_alpha($this->model->name)) {
+            echo json_encode(new errorMessage(errorList::IncorrectName)), exit;
+        }
+
+        if (!ctype_alpha($this->model->surname)) {
+            echo json_encode(new errorMessage(errorList::IncorrectSurname)), exit;
+        }
+
+        if (!filter_var($this->model->phone, FILTER_VALIDATE_INT)) {
+            echo json_encode(new errorMessage(errorList::IncorrectPhoneNumber)), exit;
+        }
+
+        if (!filter_var($this->model->email, FILTER_VALIDATE_EMAIL)) {
+            echo json_encode(new errorMessage(errorList::MailIncorrect)), exit;
+        }
+
         $valid_extensions = ['jpeg', 'jpg', 'png', 'gif', 'bmp'];
         $path = $_SERVER['DOCUMENT_ROOT'] . '/app/uploads/';
 
@@ -110,6 +126,22 @@ class controllerTask extends Controller
         $this->model->phone = $_REQUEST['phone'];
         $this->model->email = $_REQUEST['email'];
         $this->model->image = '';
+
+        if (!ctype_alpha($this->model->name)) {
+            echo json_encode(new errorMessage(errorList::IncorrectName)), exit;
+        }
+
+        if (!ctype_alpha($this->model->surname)) {
+            echo json_encode(new errorMessage(errorList::IncorrectSurname)), exit;
+        }
+
+        if (!filter_var($this->model->phone, FILTER_VALIDATE_INT)) {
+            echo json_encode(new errorMessage(errorList::IncorrectPhoneNumber)), exit;
+        }
+
+        if (!filter_var($this->model->email, FILTER_VALIDATE_EMAIL)) {
+            echo json_encode(new errorMessage(errorList::MailIncorrect)), exit;
+        }
 
         $result = $this->model->taskHaveThisList();
         if (property_exists($result, 'error')) {
