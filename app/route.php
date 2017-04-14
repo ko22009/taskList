@@ -56,13 +56,13 @@ $router->before('GET', ['/logout', '/list', '/task'], function() {
 });
 
 $router->get('/signout', 'controllerUser@register_index');
-$router->post('/signout', 'controllerUser@register_create');
 $router->get('/signin', 'controllerUser@login_index');
-$router->post('/signin', 'controllerUser@login_in');
 $router->get('/logout', 'controllerUser@login_out');
 
 $router->mount('/api', function () use ($router) {
     $router->mount('/user', function () use ($router) {
+        $router->post('/signout', 'controllerUser@api_register');
+        $router->post('/signin', 'controllerUser@api_login');
     });
     $router->mount('/list', function () use ($router) {
         $router->post('/create', 'controllerList@api_create');
@@ -79,12 +79,6 @@ $router->mount('/api', function () use ($router) {
 $router->get('/list', 'controllerList@index');
 $router->get('/list/(\d+)', 'controllerTask@index');
 
-/**
-$router->mount('/user', function () use ($router) {
-    $router->get('/', 'controllerUser@index');
-    $router->patch('/(\d+)', 'controllerUser@update');
-    $router->delete('/(\d+)', 'controllerUser@delete');
-});
-*/
+$router->get('/img', 'controllerUser@image');
 
 $router->run();

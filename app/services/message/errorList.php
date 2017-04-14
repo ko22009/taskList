@@ -30,4 +30,6 @@ class errorList {
     const ListNotYour = 'Список принадлежит не вам, либо такого нет';
     const TaskNotFound = 'Нет такой записи';
     const TaskFound = 'Запись найдена';
+    const CaptchaEmpty = 'Поле captcha пусто';
+    const CaptchaError = 'Поле captcha введено неверно';
 }

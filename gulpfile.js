@@ -35,7 +35,7 @@ gulp.task("libs", function(){
 				.pipe(gulp.dest(destDir));
 		});
 	};
-	bundleThis(["list", "app", "task"]);
+	bundleThis(["list", "user", "task"]);
 });
 
 gulp.task("reload", ['libs'], function() {
